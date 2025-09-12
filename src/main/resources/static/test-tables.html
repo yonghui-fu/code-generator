@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表列表获取测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; }
+        button { margin: 5px; padding: 10px 15px; }
+        .result { margin-top: 10px; padding: 10px; background: #f9f9f9; max-height: 400px; overflow-y: auto; }
+        .error { color: red; }
+        .success { color: green; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>表列表获取功能测试</h1>
+    
+    <div class="test-section">
+        <h3>1. 获取数据库配置列表</h3>
+        <button onclick="getConfigs()">获取配置列表</button>
+        <div class="result" id="configResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. 测试获取表列表</h3>
+        <input type="text" id="configIdInput" placeholder="输入配置ID" style="width: 300px;">
+        <button onclick="getTables()">获取表列表</button>
+        <div class="result" id="tableResult"></div>
+    </div>
+
+    <script>
+        function getConfigs() {
+            const resultDiv = document.getElementById('configResult');
+            resultDiv.innerHTML = '正在获取配置列表...';
+            
+            fetch('/database-config')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('获取配置列表失败: ' + response.status);
+                }
+                return response.text();
+            })
+            .then(html => {
+                // 简单解析HTML中的配置信息
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const configRows = doc.querySelectorAll('tbody tr');
+                
+                if (configRows.length === 0) {
+                    resultDiv.innerHTML = '<span class="error">没有找到数据库配置</span>';
+                    return;
+                }
+                
+                let configHtml = '<table><tr><th>配置名称</th><th>主机</th><th>数据库</th><th>操作</th></tr>';
+                configRows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 4) {
+                        const testBtn = cells[cells.length - 1].querySelector('button[onclick*="testConnection"]');
+                        const configId = testBtn ? testBtn.getAttribute('data-id') : '';
+                        
+                        configHtml += `<tr>
+                            <td>${cells[0].textContent}</td>
+                            <td>${cells[1].textContent}</td>
+                            <td>${cells[3].textContent}</td>
+                            <td><button onclick="document.getElementById('configIdInput').value='${configId}'; getTables();">测试获取表</button></td>
+                        </tr>`;
+                    }
+                });
+                configHtml += '</table>';
+                
+                resultDiv.innerHTML = '<span class="success">配置列表获取成功：</span>' + configHtml;
+            })
+            .catch(error => {
+                resultDiv.innerHTML = '<span class="error">错误: ' + error.message + '</span>';
+            });
+        }
+        
+        function getTables() {
+            const configId = document.getElementById('configIdInput').value;
+            const resultDiv = document.getElementById('tableResult');
+            
+            if (!configId) {
+                resultDiv.innerHTML = '<span class="error">请输入配置ID</span>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '正在获取表列表...';
+            
+            fetch('/code-gen/tables/' + configId)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('获取表列表失败: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(tables => {
+                console.log('获取到的表列表:', tables);
+                
+                if (!tables || tables.length === 0) {
+                    resultDiv.innerHTML = '<span class="error">没有找到任何表</span>';
+                    return;
+                }
+                
+                let tableHtml = '<span class="success">表列表获取成功：</span>';
+                tableHtml += '<table><tr><th>表名</th><th>类名</th><th>注释</th><th>字段数</th></tr>';
+                tables.forEach(table => {
+                    tableHtml += `<tr>
+                        <td>${table.tableName || ''}</td>
+                        <td>${table.className || ''}</td>
+                        <td>${table.tableComment || '-'}</td>
+                        <td>${table.columnCount || 0}</td>
+                    </tr>`;
+                });
+                tableHtml += '</table>';
+                
+                resultDiv.innerHTML = tableHtml;
+            })
+            .catch(error => {
+                console.error('获取表列表错误:', error);
+                resultDiv.innerHTML = '<span class="error">错误: ' + error.message + '</span>';
+            });
+        }
+        
+        // 页面加载时自动获取配置列表
+        window.onload = function() {
+            getConfigs();
+        };
+    </script>
+</body>
+</html>

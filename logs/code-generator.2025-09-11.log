@@ -1,0 +1,339 @@
+2025-09-11 17:10:16.380 [main] INFO  c.e.codegen.CodeGeneratorExample - === ��������������ʾ�� ===
+2025-09-11 17:10:16.670 [main] ERROR c.example.codegen.util.DatabaseUtil - ���ݿ����Ӳ���ʧ��
+java.sql.SQLException: Unsupported character encoding 'utf8mb4'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:98)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:90)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:64)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:74)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:85)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:442)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:239)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at java.sql.DriverManager.getConnection(Unknown Source)
+	at util.com.hui.codegen.DatabaseUtil.getConnection(DatabaseUtil.java:57)
+	at util.com.hui.codegen.DatabaseUtil.testConnection(DatabaseUtil.java:175)
+	at com.example.codegen.CodeGenerator.testConnection(CodeGenerator.java:140)
+	at com.example.codegen.CodeGeneratorExample.main(CodeGeneratorExample.java:48)
+Caused by: com.mysql.cj.exceptions.WrongArgumentException: Unsupported character encoding 'utf8mb4'
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
+	at java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:62)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:105)
+	at com.mysql.cj.util.StringUtils.getBytes(StringUtils.java:236)
+	at com.mysql.cj.jdbc.JdbcPropertySetImpl.postInitialization(JdbcPropertySetImpl.java:66)
+	at com.mysql.cj.conf.DefaultPropertySet.initializeProperties(DefaultPropertySet.java:231)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:388)
+	... 8 common frames omitted
+Caused by: java.io.UnsupportedEncodingException: utf8mb4
+	at java.lang.StringCoding.encode(Unknown Source)
+	at java.lang.String.getBytes(Unknown Source)
+	at com.mysql.cj.util.StringUtils.getBytes(StringUtils.java:234)
+	... 11 common frames omitted
+2025-09-11 17:10:16.671 [main] WARN  c.e.codegen.CodeGeneratorExample - ���ݿ�����ʧ�ܣ���������
+2025-09-11 17:10:16.671 [main] INFO  c.e.codegen.CodeGeneratorExample - ��������������Ϊʾ����ʹ�õ��ǲ�������
+2025-09-11 17:10:16.671 [main] INFO  c.e.codegen.CodeGeneratorExample - ������ɣ�
+2025-09-11 17:21:41.187 [main] INFO  c.e.codegen.CodeGeneratorApplication - === MySQL代码生成器 ===
+2025-09-11 17:24:25.333 [main] INFO  c.e.codegen.CodeGeneratorApplication - 数据库连接成功！
+2025-09-11 17:24:25.610 [main] INFO  c.example.codegen.util.DatabaseUtil - 获取到251个表: [0-1岁儿童健康检查, 1-3岁儿童健康信息, 3-6岁儿童健康检查, 产后访视, 儿童信息, 儿童死亡登记, 分娩登记, 分娩登记-新生儿记录情况, 孕产妇乳腺癌筛查信息宫颈癌筛查信息, 孕产妇死亡报告, 孕产妇第一次产前随访, 孕产妇转档孕产登记, 孕产妇非首次产前随访, 新生儿家庭访视, 新生儿疾病筛查, 新生儿疾病筛查结果, 新生儿疾病筛查诊断信息, 高危妊娠评分, anal_district_info, data_view_log, diabetes_visit_record, ds_access_log, ds_api_config, ds_log_stats, ds_mapping_config, ds_mapping_config_log, ds_system_scene_relation, ehr_anal_child_index, ehr_anal_diabetes_index, ehr_anal_health_edu_index, ehr_anal_health_index, ehr_anal_health_index3, ehr_anal_hepat_index, ehr_anal_hospital_index, ehr_anal_hyper_index, ehr_anal_old_index, ehr_anal_outpatient_index, ehr_anal_outpatient_public_health, ehr_anal_preg_index, ehr_anal_psy_index, ehr_anal_tuber_index, ehr_anal_vacc_index, ehr_check_task, ehr_cycle_allergy_history, ehr_cycle_base_address, ehr_cycle_base_info, ehr_cycle_cardiovascular_health, ehr_cycle_cardiovascular_medication, ehr_cycle_cardiovascular_visit, ehr_cycle_cdc_vaccreport, ehr_cycle_chd_drugs, ehr_cycle_chd_health_manage, ehr_cycle_chd_visit, ehr_cycle_check_detail_info, ehr_cycle_check_image_info, ehr_cycle_check_info, ehr_cycle_child_birth_defect, ehr_cycle_child_death, ehr_cycle_child_dis_screen, ehr_cycle_child_dis_urge, ehr_cycle_child_disability, ehr_cycle_child_disease_diagnose, ehr_cycle_child_disease_result_screen, ehr_cycle_child_exam_check, ehr_cycle_child_exam_one, ehr_cycle_child_exam_three, ehr_cycle_child_exam_two, ehr_cycle_child_family_visit, ehr_cycle_child_neonate, ehr_cycle_child_person, ehr_cycle_child_tcm, ehr_cycle_cis_emr_diagnosis, ehr_cycle_cis_emr_icu, ehr_cycle_cis_emr_operat, ehr_cycle_dept_base, ehr_cycle_diab_visit_medicine, ehr_cycle_diabetes_record, ehr_cycle_diabetes_risk, ehr_cycle_diabetes_visit, ehr_cycle_doctor_base, ehr_cycle_education_activities, ehr_cycle_education_materials, ehr_cycle_education_play, ehr_cycle_elder_ability, ehr_cycle_elder_cognition, ehr_cycle_elder_daily_activity, ehr_cycle_elder_disabled, ehr_cycle_elder_feel, ehr_cycle_elder_info, ehr_cycle_elder_medicine, ehr_cycle_elder_selfcare, ehr_cycle_elder_spirit_society, ehr_cycle_elder_syndrome, ehr_cycle_elder_tcm_health, ehr_cycle_expense_classify, ehr_cycle_expense_settlem, ehr_cycle_expense_settlem_bak, ehr_cycle_family_contract_base, ehr_cycle_family_disease, ehr_cycle_family_member, ehr_cycle_family_record, ehr_cycle_family_team, ehr_cycle_family_team_member, ehr_cycle_frail_child_record, ehr_cycle_frail_child_visit, ehr_cycle_health_assist_exam, ehr_cycle_health_bill, ehr_cycle_health_check, ehr_cycle_health_check_ino, ehr_cycle_health_check_life, ehr_cycle_health_check_medical, ehr_cycle_health_check_problem, ehr_cycle_health_disability, ehr_cycle_health_environ, ehr_cycle_health_group, ehr_cycle_health_guid, ehr_cycle_health_hospital_care, ehr_cycle_health_occup_expose, ehr_cycle_health_physical_exam, ehr_cycle_health_record, ehr_cycle_health_viscera, ehr_cycle_hepat_first_visit, ehr_cycle_hepatitis_record, ehr_cycle_hepatitis_visit, ehr_cycle_hosp_consult_info, ehr_cycle_hosp_expense_classify, ehr_cycle_hosp_expense_settle, ehr_cycle_hosp_expense_settle_bak, ehr_cycle_hosp_leave_hospital, ehr_cycle_hosp_medical_info, ehr_cycle_hosp_operate_info, ehr_cycle_hosp_referral_info, ehr_cycle_hosp_symptom_info, ehr_cycle_hosp_visit_record, ehr_cycle_hospital_medical_list, ehr_cycle_hospital_wc_prescription, ehr_cycle_hospital_wc_prescription_detail, ehr_cycle_hyper_hr_info, ehr_cycle_hyper_record, ehr_cycle_hyper_risk_visit, ehr_cycle_hyper_visit, ehr_cycle_hyper_visit_medicine, ehr_cycle_inspect_info, ehr_cycle_inspect_info_detail, ehr_cycle_org_base, ehr_cycle_org_doctor_gx, ehr_cycle_out_health_record, ehr_cycle_out_medical_list, ehr_cycle_out_tcm_dir, ehr_cycle_out_tcm_medical, ehr_cycle_out_tcm_medical_detail, ehr_cycle_out_west_dir, ehr_cycle_out_west_medical, ehr_cycle_out_west_medical_detail, ehr_cycle_past_disease, ehr_cycle_past_operate, ehr_cycle_past_transfuse, ehr_cycle_past_trauma, ehr_cycle_patient_diagnose, ehr_cycle_patient_medical_info, ehr_cycle_patient_ref_info, ehr_cycle_patient_symptom_info, ehr_cycle_patient_visit_record, ehr_cycle_person_info_record, ehr_cycle_phr_activity, ehr_cycle_postpartum_42_check, ehr_cycle_postpartum_visit, ehr_cycle_preg_assist_42_check, ehr_cycle_preg_check_record, ehr_cycle_preg_diag_detail, ehr_cycle_preg_second_visit, ehr_cycle_pregnant_act_base, ehr_cycle_pregnant_antenatal_measure, ehr_cycle_pregnant_base, ehr_cycle_pregnant_cancer_screen, ehr_cycle_pregnant_check, ehr_cycle_pregnant_death, ehr_cycle_pregnant_exam_info, ehr_cycle_pregnant_first_visit, ehr_cycle_pregnant_high_card, ehr_cycle_pregnant_high_risk_card, ehr_cycle_pregnant_labor, ehr_cycle_pregnant_manual, ehr_cycle_pregnant_prenatal, ehr_cycle_pregnant_record, ehr_cycle_pregnant_report_info, ehr_cycle_pregnant_sanatorium, ehr_cycle_pregnant_screen_diag, ehr_cycle_psy_record, ehr_cycle_psy_visit, ehr_cycle_psy_visit_drug, ehr_cycle_service_record, ehr_cycle_tb_cis_main, ehr_cycle_tuber_drug_delay, ehr_cycle_tuber_first_visit, ehr_cycle_tuber_record, ehr_cycle_tuber_sputum, ehr_cycle_tuber_treat_record, ehr_cycle_tuber_visit, ehr_cycle_tuber_visit_bad, ehr_cycle_vacc_record, ehr_extract_log, ehr_message_send_fail_log, ehr_org_quality, ehr_person_quality, ehr_quality_rule, ehr_quality_task, ehr_record_auth_log, ehr_record_share_config, ehr_record_view_log, ehr_rule_conditions, ehr_rule_template, ehr_screen_child_exam, ehr_screen_child_neonate, ehr_screen_health_record, ehr_screen_life_cycle, ehr_screen_old_life_cycle, ehr_screen_phr_life, ehr_screen_post_42_exam, ehr_screen_preg_child_info, ehr_screen_preg_fir_monitor, ehr_screen_preg_post_visit, ehr_screen_preg_sec_monitor, ehr_third_manage, ehr_third_user_mapping, ehr_user_access_log, ehr_user_authorize_config, ehr_user_authorize_record, ehr_user_document_check_record, ehr_user_feedback, ehr_user_health_sign, ehr_user_main_index, ehr_user_medical_record, ehr_user_medical_record_bak, ehr_user_org_document, ehr_user_retrieval, ehr_visit_log, elder_tcm_service, health_examination, health_statistics, hypertension_visit_record, mpi_cycle_area_population, mpi_cycle_total_popular, org_metrics_statistics, org_metrics_statistics_bak, resident_archive, test_table_name, third_out_hosp_record, view_child_dis_res_screen, view_ds_access_log, view_open_factory_info]
+2025-09-11 17:25:12.932 [main] INFO  com.example.codegen.CodeGenerator - 开始生成代码...
+2025-09-11 17:25:12.932 [main] INFO  com.example.codegen.CodeGenerator - 数据库配置: DatabaseConfig{host='10.0.42.9', port=3306, database='gdh-cycle-sit', username='cycle', charset='utf8'}
+2025-09-11 17:25:12.932 [main] INFO  com.example.codegen.CodeGenerator - 输出路径: ./generated
+2025-09-11 17:25:12.933 [main] INFO  com.example.codegen.CodeGenerator - 包名: com.example.demo
+2025-09-11 17:25:12.933 [main] INFO  com.example.codegen.CodeGenerator - 正在处理表 (1/1) : ehr_quality_rule
+2025-09-11 17:25:13.441 [main] INFO  c.example.codegen.util.DatabaseUtil - 获取表信息: ehr_quality_rule
+2025-09-11 17:25:13.523 [main] INFO  c.e.codegen.generator.BaseGenerator - 生成文件: ./generated\com\example\demo\entity\EhrQualityRule.java
+2025-09-11 17:25:13.528 [main] INFO  c.e.codegen.generator.BaseGenerator - 生成文件: ./generated\com\example\demo\controller\EhrQualityRuleController.java
+2025-09-11 17:25:13.532 [main] INFO  c.e.codegen.generator.BaseGenerator - 生成文件: ./generated\com\example\demo\service\EhrQualityRuleService.java
+2025-09-11 17:25:13.540 [main] ERROR com.example.codegen.CodeGenerator - 处理表 ehr_quality_rule 时出错
+freemarker.core.ParseException: Syntax error in template "mapper.ftl" in line 31, column 157:
+You can't use ${...} (an interpolation) here as you are already in FreeMarker-expression-mode. Thus, instead of ${myExpression}, just write myExpression. (${...} is only used where otherwise static text is expected, i.e., outside FreeMarker tags and interpolations, or inside string literals.)
+	at freemarker.core.TokenMgrError.toParseException(TokenMgrError.java:260)
+	at freemarker.template.Template.<init>(Template.java:268)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.CodeGenerator.generate(CodeGenerator.java:86)
+	at com.example.codegen.CodeGeneratorApplication.selectTables(CodeGeneratorApplication.java:137)
+	at com.example.codegen.CodeGeneratorApplication.main(CodeGeneratorApplication.java:38)
+2025-09-11 17:25:13.540 [main] INFO  com.example.codegen.CodeGenerator - 代码生成完成！共处理 1 个表
+2025-09-11 17:34:13.835 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:34:13.999 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.ParseException: Syntax error in template "mapper.ftl" in line 31, column 143:
+You can't use ${...} (an interpolation) here as you are already in FreeMarker-expression-mode. Thus, instead of ${myExpression}, just write myExpression. (${...} is only used where otherwise static text is expected, i.e., outside FreeMarker tags and interpolations, or inside string literals.)
+	at freemarker.core.TokenMgrError.toParseException(TokenMgrError.java:260)
+	at freemarker.template.Template.<init>(Template.java:268)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:28)
+2025-09-11 17:35:23.348 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:35:23.550 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.ParseException: Syntax error in template "mapper.ftl" in line 31, column 147:
+Lexical error: encountered "$" (36), after "\\".
+	at freemarker.core.TokenMgrError.toParseException(TokenMgrError.java:260)
+	at freemarker.template.Template.<init>(Template.java:268)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:28)
+2025-09-11 17:37:00.678 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:37:00.878 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.ParseException: Syntax error in template "mapper.ftl" in line 31, column 157:
+You can't use ${...} (an interpolation) here as you are already in FreeMarker-expression-mode. Thus, instead of ${myExpression}, just write myExpression. (${...} is only used where otherwise static text is expected, i.e., outside FreeMarker tags and interpolations, or inside string literals.)
+	at freemarker.core.TokenMgrError.toParseException(TokenMgrError.java:260)
+	at freemarker.template.Template.<init>(Template.java:268)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:28)
+2025-09-11 17:37:52.249 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:37:52.381 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.ParseException: Syntax error in template "mapper.ftl" in line 31, column 157:
+You can't use ${...} (an interpolation) here as you are already in FreeMarker-expression-mode. Thus, instead of ${myExpression}, just write myExpression. (${...} is only used where otherwise static text is expected, i.e., outside FreeMarker tags and interpolations, or inside string literals.)
+	at freemarker.core.TokenMgrError.toParseException(TokenMgrError.java:260)
+	at freemarker.template.Template.<init>(Template.java:268)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:28)
+2025-09-11 17:38:29.218 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:38:29.350 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.ParseException: Syntax error in template "mapper.ftl" in line 45, column 218:
+You can't use ${...} (an interpolation) here as you are already in FreeMarker-expression-mode. Thus, instead of ${myExpression}, just write myExpression. (${...} is only used where otherwise static text is expected, i.e., outside FreeMarker tags and interpolations, or inside string literals.)
+	at freemarker.core.TokenMgrError.toParseException(TokenMgrError.java:260)
+	at freemarker.template.Template.<init>(Template.java:268)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:28)
+2025-09-11 17:39:01.825 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:39:02.108 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.ParseException: Syntax error in template "mapper.ftl" in line 32, column 107:
+You can't use ${...} (an interpolation) here as you are already in FreeMarker-expression-mode. Thus, instead of ${myExpression}, just write myExpression. (${...} is only used where otherwise static text is expected, i.e., outside FreeMarker tags and interpolations, or inside string literals.)
+	at freemarker.core.TokenMgrError.toParseException(TokenMgrError.java:260)
+	at freemarker.template.Template.<init>(Template.java:268)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:28)
+2025-09-11 17:42:02.097 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:42:02.255 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\mapper\TestUserMapper.java
+2025-09-11 17:42:02.256 [main] INFO  com.example.codegen.TemplateTest - ģ���﷨���Գɹ���
+2025-09-11 17:43:49.667 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:43:49.875 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\entity\TestUser.java
+2025-09-11 17:43:49.884 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\controller\TestUserController.java
+2025-09-11 17:43:49.888 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\service\TestUserService.java
+2025-09-11 17:43:49.890 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\mapper\TestUserMapper.java
+2025-09-11 17:43:49.898 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.ParseException: Syntax error in template "mapperXml.ftl" in line 33, column 46:
+Encountered ",", but was expecting one of these patterns:
+    "."
+    ".."
+    <DOT_DOT_LESS>
+    "..*"
+    "?"
+    "??"
+    "!"
+    ";"
+    "["
+    "("
+    "}"
+    <TERMINATING_EXCLAM>
+	at freemarker.core.FMParser.generateParseException(FMParser.java:6120)
+	at freemarker.core.FMParser.jj_consume_token(FMParser.java:5979)
+	at freemarker.core.FMParser.NumericalOutput(FMParser.java:1717)
+	at freemarker.core.FMParser.MixedContentElements(FMParser.java:3972)
+	at freemarker.core.FMParser.Root(FMParser.java:4665)
+	at freemarker.template.Template.<init>(Template.java:252)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:37)
+2025-09-11 17:44:42.732 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:44:42.875 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\entity\TestUser.java
+2025-09-11 17:44:42.881 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\controller\TestUserController.java
+2025-09-11 17:44:42.885 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\service\TestUserService.java
+2025-09-11 17:44:42.888 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\mapper\TestUserMapper.java
+2025-09-11 17:44:42.894 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.ParseException: Syntax error in template "mapperXml.ftl" in line 50, column 15:
+You can't use ${...} (an interpolation) here as you are already in FreeMarker-expression-mode. Thus, instead of ${myExpression}, just write myExpression. (${...} is only used where otherwise static text is expected, i.e., outside FreeMarker tags and interpolations, or inside string literals.)
+	at freemarker.core.TokenMgrError.toParseException(TokenMgrError.java:260)
+	at freemarker.template.Template.<init>(Template.java:268)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:37)
+2025-09-11 17:45:31.165 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:45:31.321 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\entity\TestUser.java
+2025-09-11 17:45:31.327 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\controller\TestUserController.java
+2025-09-11 17:45:31.330 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\service\TestUserService.java
+2025-09-11 17:45:31.333 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\mapper\TestUserMapper.java
+2025-09-11 17:45:31.340 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.ParseException: Syntax error in template "mapperXml.ftl" in line 61, column 82:
+Unexpected end of file reached.
+	at freemarker.core.FMParser.generateParseException(FMParser.java:6120)
+	at freemarker.core.FMParser.jj_consume_token(FMParser.java:5979)
+	at freemarker.core.FMParser.UnaryExpression(FMParser.java:712)
+	at freemarker.core.FMParser.MultiplicativeExpression(FMParser.java:822)
+	at freemarker.core.FMParser.AdditiveExpression(FMParser.java:774)
+	at freemarker.core.FMParser.RangeExpression(FMParser.java:950)
+	at freemarker.core.FMParser.RelationalExpression(FMParser.java:902)
+	at freemarker.core.FMParser.EqualityExpression(FMParser.java:865)
+	at freemarker.core.FMParser.AndExpression(FMParser.java:1017)
+	at freemarker.core.FMParser.OrExpression(FMParser.java:1039)
+	at freemarker.core.FMParser.Expression(FMParser.java:552)
+	at freemarker.core.FMParser.NumericalOutput(FMParser.java:1705)
+	at freemarker.core.FMParser.StaticTextAndInterpolations(FMParser.java:4629)
+	at freemarker.core.StringLiteral.parseValue(StringLiteral.java:74)
+	at freemarker.core.FMParser.StringLiteral(FMParser.java:1550)
+	at freemarker.core.FMParser.AtomicExpression(FMParser.java:635)
+	at freemarker.core.FMParser.PrimaryExpression(FMParser.java:563)
+	at freemarker.core.FMParser.UnaryExpression(FMParser.java:707)
+	at freemarker.core.FMParser.MultiplicativeExpression(FMParser.java:822)
+	at freemarker.core.FMParser.AdditiveExpression(FMParser.java:799)
+	at freemarker.core.FMParser.RangeExpression(FMParser.java:950)
+	at freemarker.core.FMParser.RelationalExpression(FMParser.java:902)
+	at freemarker.core.FMParser.EqualityExpression(FMParser.java:865)
+	at freemarker.core.FMParser.AndExpression(FMParser.java:1017)
+	at freemarker.core.FMParser.OrExpression(FMParser.java:1039)
+	at freemarker.core.FMParser.Expression(FMParser.java:552)
+	at freemarker.core.FMParser.PositionalArgs(FMParser.java:3124)
+	at freemarker.core.FMParser.ListLiteral(FMParser.java:1063)
+	at freemarker.core.FMParser.AtomicExpression(FMParser.java:644)
+	at freemarker.core.FMParser.PrimaryExpression(FMParser.java:563)
+	at freemarker.core.FMParser.UnaryExpression(FMParser.java:707)
+	at freemarker.core.FMParser.MultiplicativeExpression(FMParser.java:822)
+	at freemarker.core.FMParser.AdditiveExpression(FMParser.java:799)
+	at freemarker.core.FMParser.RangeExpression(FMParser.java:950)
+	at freemarker.core.FMParser.RelationalExpression(FMParser.java:902)
+	at freemarker.core.FMParser.EqualityExpression(FMParser.java:865)
+	at freemarker.core.FMParser.AndExpression(FMParser.java:1017)
+	at freemarker.core.FMParser.OrExpression(FMParser.java:1039)
+	at freemarker.core.FMParser.Expression(FMParser.java:552)
+	at freemarker.core.FMParser.Assign(FMParser.java:2415)
+	at freemarker.core.FMParser.FreemarkerDirective(FMParser.java:3643)
+	at freemarker.core.FMParser.MixedContentElements(FMParser.java:4019)
+	at freemarker.core.FMParser.If(FMParser.java:1792)
+	at freemarker.core.FMParser.FreemarkerDirective(FMParser.java:3629)
+	at freemarker.core.FMParser.MixedContentElements(FMParser.java:4019)
+	at freemarker.core.FMParser.List(FMParser.java:1913)
+	at freemarker.core.FMParser.FreemarkerDirective(FMParser.java:3633)
+	at freemarker.core.FMParser.MixedContentElements(FMParser.java:4019)
+	at freemarker.core.FMParser.Root(FMParser.java:4665)
+	at freemarker.template.Template.<init>(Template.java:252)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:37)
+2025-09-11 17:46:09.902 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:46:10.165 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\entity\TestUser.java
+2025-09-11 17:46:10.173 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\controller\TestUserController.java
+2025-09-11 17:46:10.175 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\service\TestUserService.java
+2025-09-11 17:46:10.178 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\mapper\TestUserMapper.java
+2025-09-11 17:46:10.182 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.ParseException: Syntax error in template "mapperXml.ftl" in line 50, column 15:
+You can't use ${...} (an interpolation) here as you are already in FreeMarker-expression-mode. Thus, instead of ${myExpression}, just write myExpression. (${...} is only used where otherwise static text is expected, i.e., outside FreeMarker tags and interpolations, or inside string literals.)
+	at freemarker.core.TokenMgrError.toParseException(TokenMgrError.java:260)
+	at freemarker.template.Template.<init>(Template.java:268)
+	at freemarker.cache.TemplateCache.loadTemplate(TemplateCache.java:549)
+	at freemarker.cache.TemplateCache.getTemplateInternal(TemplateCache.java:440)
+	at freemarker.cache.TemplateCache.getTemplate(TemplateCache.java:293)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2910)
+	at freemarker.template.Configuration.getTemplate(Configuration.java:2759)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:64)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:37)
+2025-09-11 17:46:43.126 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:46:43.383 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\entity\TestUser.java
+2025-09-11 17:46:43.395 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\controller\TestUserController.java
+2025-09-11 17:46:43.401 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\service\TestUserService.java
+2025-09-11 17:46:43.406 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\mapper\TestUserMapper.java
+2025-09-11 17:46:43.433 [main] ERROR com.example.codegen.TemplateTest - ģ���﷨����ʧ��
+freemarker.core.InvalidReferenceException: The following has evaluated to null or missing:
+==> id  [in template "mapperXml.ftl" at line 33, column 44]
+
+----
+Tip: If the failing expression is known to legally refer to something that's sometimes null or missing, either specify a default value like myOptionalVar!myDefault, or use <#if myOptionalVar??>when-present<#else>when-missing</#if>. (These only cover the last step of the expression; to cover the whole expression, use parenthesis: (myOptionalVar.foo)!myDefault, (myOptionalVar.foo)??
+----
+
+----
+FTL stack trace ("~" means nesting-related):
+	- Failed at: #{id}  [in template "mapperXml.ftl" at line 33, column 42]
+----
+	at freemarker.core.InvalidReferenceException.getInstance(InvalidReferenceException.java:134)
+	at freemarker.core.UnexpectedTypeException.newDescriptionBuilder(UnexpectedTypeException.java:85)
+	at freemarker.core.UnexpectedTypeException.<init>(UnexpectedTypeException.java:48)
+	at freemarker.core.NonNumericalException.<init>(NonNumericalException.java:47)
+	at freemarker.core.Expression.modelToNumber(Expression.java:158)
+	at freemarker.core.Expression.evalToNumber(Expression.java:151)
+	at freemarker.core.NumericalOutput.calculateInterpolatedStringOrMarkup(NumericalOutput.java:78)
+	at freemarker.core.NumericalOutput.accept(NumericalOutput.java:66)
+	at freemarker.core.Environment.visit(Environment.java:335)
+	at freemarker.core.Environment.visit(Environment.java:341)
+	at freemarker.core.Environment.process(Environment.java:314)
+	at freemarker.template.Template.process(Template.java:383)
+	at generator.com.hui.codegen.BaseGenerator.generate(BaseGenerator.java:66)
+	at com.example.codegen.TemplateTest.main(TemplateTest.java:37)
+2025-09-11 17:47:18.063 [main] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:47:18.266 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\entity\TestUser.java
+2025-09-11 17:47:18.271 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\controller\TestUserController.java
+2025-09-11 17:47:18.274 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\service\TestUserService.java
+2025-09-11 17:47:18.276 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\mapper\TestUserMapper.java
+2025-09-11 17:47:18.282 [main] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\mapper\TestUserMapper.xml
+2025-09-11 17:47:18.282 [main] INFO  com.example.codegen.TemplateTest - ģ���﷨���Գɹ���
+2025-09-11 17:49:56.517 [com.example.codegen.TemplateTest.main()] INFO  com.example.codegen.TemplateTest - === FreeMarkerģ���﷨���� ===
+2025-09-11 17:49:56.751 [com.example.codegen.TemplateTest.main()] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\entity\TestUser.java
+2025-09-11 17:49:56.761 [com.example.codegen.TemplateTest.main()] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\controller\TestUserController.java
+2025-09-11 17:49:56.766 [com.example.codegen.TemplateTest.main()] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\service\TestUserService.java
+2025-09-11 17:49:56.771 [com.example.codegen.TemplateTest.main()] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\mapper\TestUserMapper.java
+2025-09-11 17:49:56.780 [com.example.codegen.TemplateTest.main()] INFO  c.e.codegen.generator.BaseGenerator - �����ļ�: ./template-test\com\example\test\mapper\TestUserMapper.xml
+2025-09-11 17:49:56.780 [com.example.codegen.TemplateTest.main()] INFO  com.example.codegen.TemplateTest - ģ���﷨���Գɹ���
+2025-09-11 17:54:25.535 [main] INFO  c.e.codegen.CodeGeneratorApplication - === MySQL代码生成器 ===
+2025-09-11 17:55:23.528 [main] INFO  c.e.codegen.CodeGeneratorApplication - 数据库连接成功！
+2025-09-11 17:55:23.854 [main] INFO  c.example.codegen.util.DatabaseUtil - 获取到251个表: [0-1岁儿童健康检查, 1-3岁儿童健康信息, 3-6岁儿童健康检查, 产后访视, 儿童信息, 儿童死亡登记, 分娩登记, 分娩登记-新生儿记录情况, 孕产妇乳腺癌筛查信息宫颈癌筛查信息, 孕产妇死亡报告, 孕产妇第一次产前随访, 孕产妇转档孕产登记, 孕产妇非首次产前随访, 新生儿家庭访视, 新生儿疾病筛查, 新生儿疾病筛查结果, 新生儿疾病筛查诊断信息, 高危妊娠评分, anal_district_info, data_view_log, diabetes_visit_record, ds_access_log, ds_api_config, ds_log_stats, ds_mapping_config, ds_mapping_config_log, ds_system_scene_relation, ehr_anal_child_index, ehr_anal_diabetes_index, ehr_anal_health_edu_index, ehr_anal_health_index, ehr_anal_health_index3, ehr_anal_hepat_index, ehr_anal_hospital_index, ehr_anal_hyper_index, ehr_anal_old_index, ehr_anal_outpatient_index, ehr_anal_outpatient_public_health, ehr_anal_preg_index, ehr_anal_psy_index, ehr_anal_tuber_index, ehr_anal_vacc_index, ehr_check_task, ehr_cycle_allergy_history, ehr_cycle_base_address, ehr_cycle_base_info, ehr_cycle_cardiovascular_health, ehr_cycle_cardiovascular_medication, ehr_cycle_cardiovascular_visit, ehr_cycle_cdc_vaccreport, ehr_cycle_chd_drugs, ehr_cycle_chd_health_manage, ehr_cycle_chd_visit, ehr_cycle_check_detail_info, ehr_cycle_check_image_info, ehr_cycle_check_info, ehr_cycle_child_birth_defect, ehr_cycle_child_death, ehr_cycle_child_dis_screen, ehr_cycle_child_dis_urge, ehr_cycle_child_disability, ehr_cycle_child_disease_diagnose, ehr_cycle_child_disease_result_screen, ehr_cycle_child_exam_check, ehr_cycle_child_exam_one, ehr_cycle_child_exam_three, ehr_cycle_child_exam_two, ehr_cycle_child_family_visit, ehr_cycle_child_neonate, ehr_cycle_child_person, ehr_cycle_child_tcm, ehr_cycle_cis_emr_diagnosis, ehr_cycle_cis_emr_icu, ehr_cycle_cis_emr_operat, ehr_cycle_dept_base, ehr_cycle_diab_visit_medicine, ehr_cycle_diabetes_record, ehr_cycle_diabetes_risk, ehr_cycle_diabetes_visit, ehr_cycle_doctor_base, ehr_cycle_education_activities, ehr_cycle_education_materials, ehr_cycle_education_play, ehr_cycle_elder_ability, ehr_cycle_elder_cognition, ehr_cycle_elder_daily_activity, ehr_cycle_elder_disabled, ehr_cycle_elder_feel, ehr_cycle_elder_info, ehr_cycle_elder_medicine, ehr_cycle_elder_selfcare, ehr_cycle_elder_spirit_society, ehr_cycle_elder_syndrome, ehr_cycle_elder_tcm_health, ehr_cycle_expense_classify, ehr_cycle_expense_settlem, ehr_cycle_expense_settlem_bak, ehr_cycle_family_contract_base, ehr_cycle_family_disease, ehr_cycle_family_member, ehr_cycle_family_record, ehr_cycle_family_team, ehr_cycle_family_team_member, ehr_cycle_frail_child_record, ehr_cycle_frail_child_visit, ehr_cycle_health_assist_exam, ehr_cycle_health_bill, ehr_cycle_health_check, ehr_cycle_health_check_ino, ehr_cycle_health_check_life, ehr_cycle_health_check_medical, ehr_cycle_health_check_problem, ehr_cycle_health_disability, ehr_cycle_health_environ, ehr_cycle_health_group, ehr_cycle_health_guid, ehr_cycle_health_hospital_care, ehr_cycle_health_occup_expose, ehr_cycle_health_physical_exam, ehr_cycle_health_record, ehr_cycle_health_viscera, ehr_cycle_hepat_first_visit, ehr_cycle_hepatitis_record, ehr_cycle_hepatitis_visit, ehr_cycle_hosp_consult_info, ehr_cycle_hosp_expense_classify, ehr_cycle_hosp_expense_settle, ehr_cycle_hosp_expense_settle_bak, ehr_cycle_hosp_leave_hospital, ehr_cycle_hosp_medical_info, ehr_cycle_hosp_operate_info, ehr_cycle_hosp_referral_info, ehr_cycle_hosp_symptom_info, ehr_cycle_hosp_visit_record, ehr_cycle_hospital_medical_list, ehr_cycle_hospital_wc_prescription, ehr_cycle_hospital_wc_prescription_detail, ehr_cycle_hyper_hr_info, ehr_cycle_hyper_record, ehr_cycle_hyper_risk_visit, ehr_cycle_hyper_visit, ehr_cycle_hyper_visit_medicine, ehr_cycle_inspect_info, ehr_cycle_inspect_info_detail, ehr_cycle_org_base, ehr_cycle_org_doctor_gx, ehr_cycle_out_health_record, ehr_cycle_out_medical_list, ehr_cycle_out_tcm_dir, ehr_cycle_out_tcm_medical, ehr_cycle_out_tcm_medical_detail, ehr_cycle_out_west_dir, ehr_cycle_out_west_medical, ehr_cycle_out_west_medical_detail, ehr_cycle_past_disease, ehr_cycle_past_operate, ehr_cycle_past_transfuse, ehr_cycle_past_trauma, ehr_cycle_patient_diagnose, ehr_cycle_patient_medical_info, ehr_cycle_patient_ref_info, ehr_cycle_patient_symptom_info, ehr_cycle_patient_visit_record, ehr_cycle_person_info_record, ehr_cycle_phr_activity, ehr_cycle_postpartum_42_check, ehr_cycle_postpartum_visit, ehr_cycle_preg_assist_42_check, ehr_cycle_preg_check_record, ehr_cycle_preg_diag_detail, ehr_cycle_preg_second_visit, ehr_cycle_pregnant_act_base, ehr_cycle_pregnant_antenatal_measure, ehr_cycle_pregnant_base, ehr_cycle_pregnant_cancer_screen, ehr_cycle_pregnant_check, ehr_cycle_pregnant_death, ehr_cycle_pregnant_exam_info, ehr_cycle_pregnant_first_visit, ehr_cycle_pregnant_high_card, ehr_cycle_pregnant_high_risk_card, ehr_cycle_pregnant_labor, ehr_cycle_pregnant_manual, ehr_cycle_pregnant_prenatal, ehr_cycle_pregnant_record, ehr_cycle_pregnant_report_info, ehr_cycle_pregnant_sanatorium, ehr_cycle_pregnant_screen_diag, ehr_cycle_psy_record, ehr_cycle_psy_visit, ehr_cycle_psy_visit_drug, ehr_cycle_service_record, ehr_cycle_tb_cis_main, ehr_cycle_tuber_drug_delay, ehr_cycle_tuber_first_visit, ehr_cycle_tuber_record, ehr_cycle_tuber_sputum, ehr_cycle_tuber_treat_record, ehr_cycle_tuber_visit, ehr_cycle_tuber_visit_bad, ehr_cycle_vacc_record, ehr_extract_log, ehr_message_send_fail_log, ehr_org_quality, ehr_person_quality, ehr_quality_rule, ehr_quality_task, ehr_record_auth_log, ehr_record_share_config, ehr_record_view_log, ehr_rule_conditions, ehr_rule_template, ehr_screen_child_exam, ehr_screen_child_neonate, ehr_screen_health_record, ehr_screen_life_cycle, ehr_screen_old_life_cycle, ehr_screen_phr_life, ehr_screen_post_42_exam, ehr_screen_preg_child_info, ehr_screen_preg_fir_monitor, ehr_screen_preg_post_visit, ehr_screen_preg_sec_monitor, ehr_third_manage, ehr_third_user_mapping, ehr_user_access_log, ehr_user_authorize_config, ehr_user_authorize_record, ehr_user_document_check_record, ehr_user_feedback, ehr_user_health_sign, ehr_user_main_index, ehr_user_medical_record, ehr_user_medical_record_bak, ehr_user_org_document, ehr_user_retrieval, ehr_visit_log, elder_tcm_service, health_examination, health_statistics, hypertension_visit_record, mpi_cycle_area_population, mpi_cycle_total_popular, org_metrics_statistics, org_metrics_statistics_bak, resident_archive, test_table_name, third_out_hosp_record, view_child_dis_res_screen, view_ds_access_log, view_open_factory_info]
+2025-09-11 17:55:43.460 [main] INFO  com.example.codegen.CodeGenerator - 开始生成代码...
+2025-09-11 17:55:43.461 [main] INFO  com.example.codegen.CodeGenerator - 数据库配置: DatabaseConfig{host='10.0.42.9', port=3306, database='gdh-cycle-sit', username='cycle', charset='utf8'}
+2025-09-11 17:55:43.467 [main] INFO  com.example.codegen.CodeGenerator - 输出路径: ./generated
+2025-09-11 17:55:43.467 [main] INFO  com.example.codegen.CodeGenerator - 包名: com.example.demo
+2025-09-11 17:55:43.467 [main] INFO  com.example.codegen.CodeGenerator - 正在处理表 (1/1) : ehr_quality_rule
+2025-09-11 17:55:44.063 [main] INFO  c.example.codegen.util.DatabaseUtil - 获取表信息: ehr_quality_rule
+2025-09-11 17:55:44.158 [main] INFO  c.e.codegen.generator.BaseGenerator - 生成文件: ./generated\com\example\demo\entity\EhrQualityRule.java
+2025-09-11 17:55:44.163 [main] INFO  c.e.codegen.generator.BaseGenerator - 生成文件: ./generated\com\example\demo\controller\EhrQualityRuleController.java
+2025-09-11 17:55:44.169 [main] INFO  c.e.codegen.generator.BaseGenerator - 生成文件: ./generated\com\example\demo\service\EhrQualityRuleService.java
+2025-09-11 17:55:44.175 [main] INFO  c.e.codegen.generator.BaseGenerator - 生成文件: ./generated\com\example\demo\mapper\EhrQualityRuleMapper.java
+2025-09-11 17:55:44.186 [main] INFO  c.e.codegen.generator.BaseGenerator - 生成文件: ./generated\com\example\demo\mapper\EhrQualityRuleMapper.xml
+2025-09-11 17:55:44.186 [main] INFO  com.example.codegen.CodeGenerator - 表 ehr_quality_rule 处理完成
+2025-09-11 17:55:44.186 [main] INFO  com.example.codegen.CodeGenerator - 代码生成完成！共处理 1 个表

@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码生成 - 代码生成器</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background-color: #343a40;
+        }
+        .sidebar .nav-link {
+            color: #fff;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #495057;
+            color: #fff;
+        }
+        .sidebar .nav-link.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .step-indicator {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #dee2e6;
+            z-index: -1;
+        }
+        .step:last-child::after {
+            display: none;
+        }
+        .step.active .step-number {
+            background-color: #007bff;
+            color: white;
+        }
+        .step.completed .step-number {
+            background-color: #28a745;
+            color: white;
+        }
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            background-color: #dee2e6;
+            color: #6c757d;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .table-item {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .table-item:hover {
+            background-color: #f8f9fa;
+        }
+        .table-item.selected {
+            background-color: #e3f2fd;
+        }
+        .file-item {
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none !important;
+            padding: 12px 16px;
+        }
+        .file-item:hover {
+            background-color: #f8f9fa;
+        }
+        .file-item.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .file-item.active .text-muted {
+            color: rgba(255,255,255,0.8) !important;
+        }
+        #codeContent {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+            white-space: pre;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 侧边栏 -->
+            <nav class="col-md-2 d-md-block sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <div class="text-center mb-4">
+                        <h4 class="text-white">代码生成器</h4>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fa fa-home"></i> 首页
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/database-config">
+                                <i class="fa fa-database"></i> 数据库配置
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/template-config">
+                                <i class="fa fa-file-code-o"></i> 模板配置
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/code-gen">
+                                <i class="fa fa-cogs"></i> 代码生成
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- 主内容区 -->
+            <main class="col-md-10 ms-sm-auto main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">代码生成</h1>
+                </div>
+
+                <!-- 步骤指示器 -->
+                <div class="step-indicator">
+                    <div class="step active" id="step1">
+                        <div class="step-number">1</div>
+                        <div>选择数据库</div>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-number">2</div>
+                        <div>选择表</div>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-number">3</div>
+                        <div>配置生成</div>
+                    </div>
+                    <div class="step" id="step4">
+                        <div class="step-number">4</div>
+                        <div>生成代码</div>
+                    </div>
+                </div>
+
+                <!-- 步骤1: 选择数据库 -->
+                <div class="card" id="databaseStep">
+                    <div class="card-header">
+                        <h5 class="mb-0">步骤1: 选择数据库配置</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="databaseSelect" class="form-label">数据库配置</label>
+                                <select class="form-select" id="databaseSelect" onchange="selectDatabase(this.value)">
+                                    <option value="">请选择数据库配置</option>
+                                    <option th:each="config : ${configs}" th:value="${config.id}" th:text="${config.name}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">&nbsp;</label>
+                                <div>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(2)" id="nextToTables" disabled>
+                                        下一步 <i class="fa fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="databaseInfo" class="mt-3" style="display: none;">
+                            <div class="alert alert-info">
+                                <strong>数据库信息：</strong>
+                                <span id="dbInfoText"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤2: 选择表 -->
+                <div class="card mt-3" id="tablesStep" style="display: none;">
+                    <div class="card-header">
+                        <h5 class="mb-0">步骤2: 选择数据表</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-outline-primary me-2" onclick="selectAllTables()">
+                                    <i class="fa fa-check-square-o"></i> 全选
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary me-2" onclick="deselectAllTables()">
+                                    <i class="fa fa-square-o"></i> 全不选
+                                </button>
+                                <span class="text-muted">已选择 <span id="selectedTableCount">0</span> 个表</span>
+                                <span class="text-muted ms-3">共 <span id="totalTableCount">0</span> 个表</span>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <button type="button" class="btn btn-secondary me-2" onclick="previousStep(1)">
+                                    <i class="fa fa-arrow-left"></i> 上一步
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="nextStep(3)" id="nextToConfig" disabled>
+                                    下一步 <i class="fa fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tablesTable">
+                                <thead>
+                                    <tr>
+                                        <th width="50">
+                                            <input type="checkbox" id="selectAllCheckbox" onchange="toggleAllTables(this.checked)">
+                                        </th>
+                                        <th>表名</th>
+                                        <th>类名</th>
+                                        <th>注释</th>
+                                        <th>字段数</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablesTableBody">
+                                    <!-- 表格内容将通过JS动态加载 -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- 分页导航 -->
+                        <div class="d-flex justify-content-between align-items-center mt-3" id="paginationContainer" style="display: none !important;">
+                            <div class="text-muted">
+                                显示 <span id="currentPageInfo"></span>
+                            </div>
+                            <nav>
+                                <ul class="pagination mb-0" id="pagination">
+                                    <!-- 分页按钮将通过JS动态生成 -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤3: 配置生成 -->
+                <div class="card mt-3" id="configStep" style="display: none;">
+                    <div class="card-header">
+                        <h5 class="mb-0">步骤3: 配置生成选项</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="packageName" class="form-label">包名</label>
+                                    <input type="text" class="form-control" id="packageName" value="com.example.demo" placeholder="如: com.example.demo">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="outputPath" class="form-label">输出路径</label>
+                                    <input type="text" class="form-control" id="outputPath" value="./generated-code" placeholder="如: ./generated-code">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="templateGroupSelect" class="form-label">模板组</label>
+                                    <select class="form-select" id="templateGroupSelect" onchange="loadTemplatesByGroup(this.value)">
+                                        <option value="">请选择模板组</option>
+                                        <!-- 模板组选项将通过JavaScript动态加载 -->
+                                    </select>
+                                </div>
+                                <label class="form-label">选择模板</label>
+                                <div id="templateContainer">
+                                    <!-- 模板复选框将通过JavaScript动态生成 -->
+                                    <div class="text-muted text-center p-3">
+                                        <i class="fa fa-info-circle"></i> 请先选择模板组
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 text-end">
+                                <button type="button" class="btn btn-secondary me-2" onclick="previousStep(2)">
+                                    <i class="fa fa-arrow-left"></i> 上一步
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="nextStep(4)">
+                                    下一步 <i class="fa fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤4: 生成代码 -->
+                <div class="card mt-3" id="generateStep" style="display: none;">
+                    <div class="card-header">
+                        <h5 class="mb-0">步骤4: 生成代码</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="generateSummary" class="mb-4">
+                            <!-- 生成摘要将通过JS填充 -->
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12 text-center">
+                                <button type="button" class="btn btn-secondary me-2" onclick="previousStep(3)">
+                                    <i class="fa fa-arrow-left"></i> 上一步
+                                </button>
+                                <button type="button" class="btn btn-info btn-lg me-2" onclick="previewCode()">
+                                    <i class="fa fa-eye"></i> 预览代码
+                                </button>
+                                <button type="button" class="btn btn-success btn-lg me-2" onclick="generateCode()">
+                                    <i class="fa fa-magic"></i> 生成代码
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 代码预览区域 -->
+                        <div id="previewContainer" style="display: none;">
+                            <div class="row">
+                                <!-- 左侧：文件列表 -->
+                                <div class="col-md-3">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6 class="mb-0">
+                                                <i class="fa fa-files-o"></i> 生成文件 
+                                                <span class="badge bg-primary" id="fileCount">0</span>
+                                            </h6>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="list-group list-group-flush" id="fileList">
+                                                <!-- 文件列表将通过JS动态生成 -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 右侧：代码内容 -->
+                                <div class="col-md-9">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-0" id="currentFileName">
+                                                <i class="fa fa-file-code-o"></i> 请选择文件查看代码
+                                            </h6>
+                                            <div>
+                                                <button class="btn btn-sm btn-outline-secondary" onclick="copyCode()" id="copyBtn" style="display: none;">
+                                                    <i class="fa fa-copy"></i> 复制
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" onclick="downloadFile()" id="downloadBtn" style="display: none;">
+                                                    <i class="fa fa-download"></i> 下载
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <pre id="codeContent" style="margin: 0; padding: 20px; background-color: #f8f9fa; border: none; max-height: 600px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.4;">
+                                                <code class="text-muted">请点击左侧文件列表查看代码内容</code>
+                                            </pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="generateResult" class="mt-4" style="display: none;">
+                            <!-- 生成结果将显示在这里 -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentConfigId = '';
+        let tablesList = [];
+        let selectedTables = [];
+        let currentPage = 1;
+        let pageSize = 20;
+        let totalPages = 0;
+        let totalTables = 0;
+        let tableDetailsCache = {}; // 缓存表详细信息
+        let previewFiles = []; // 预览文件列表
+        let currentFileIndex = -1; // 当前选中的文件索引
+        let templateGroups = []; // 模板组列表
+        let currentGroupTemplates = []; // 当前组的模板列表
+
+        // 选择数据库
+        function selectDatabase(configId) {
+            currentConfigId = configId;
+            if (configId) {
+                document.getElementById('nextToTables').disabled = false;
+                document.getElementById('databaseInfo').style.display = 'block';
+                
+                // 显示数据库信息
+                const select = document.getElementById('databaseSelect');
+                const selectedOption = select.options[select.selectedIndex];
+                document.getElementById('dbInfoText').textContent = `已选择: ${selectedOption.text}`;
+            } else {
+                document.getElementById('nextToTables').disabled = true;
+                document.getElementById('databaseInfo').style.display = 'none';
+            }
+        }
+
+        // 下一步
+        function nextStep(step) {
+            // 隐藏所有步骤
+            document.querySelectorAll('.card').forEach(card => {
+                if (card.id.endsWith('Step')) {
+                    card.style.display = 'none';
+                }
+            });
+
+            // 更新步骤指示器
+            document.querySelectorAll('.step').forEach((stepEl, index) => {
+                stepEl.classList.remove('active');
+                if (index + 1 < step) {
+                    stepEl.classList.add('completed');
+                } else {
+                    stepEl.classList.remove('completed');
+                }
+            });
+            document.getElementById(`step${step}`).classList.add('active');
+
+            // 显示对应步骤
+            switch(step) {
+                case 2:
+                    document.getElementById('tablesStep').style.display = 'block';
+                    // 重置分页参数
+                    currentPage = 1;
+                    tableDetailsCache = {}; // 清空缓存
+                    loadTables();
+                    break;
+                case 3:
+                    document.getElementById('configStep').style.display = 'block';
+                    loadTemplateGroups();
+                    break;
+                case 4:
+                    document.getElementById('generateStep').style.display = 'block';
+                    showGenerateSummary();
+                    break;
+            }
+        }
+
+        // 上一步
+        function previousStep(step) {
+            nextStep(step);
+        }
+
+        // 加载表列表（分页版本）
+        function loadTables() {
+            if (!currentConfigId) return;
+
+            // 显示加载状态
+            const tbody = document.getElementById('tablesTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center"><i class="fa fa-spinner fa-spin"></i> 正在加载表列表...</td></tr>';
+            
+            // 隐藏分页导航
+            document.getElementById('paginationContainer').style.display = 'none';
+
+            fetch(`/code-gen/tables/${currentConfigId}/page?page=${currentPage}&size=${pageSize}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('获取表列表失败: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    console.log('获取到分页表列表:', result);
+                    tablesList = result.tables;
+                    totalPages = result.totalPages;
+                    totalTables = result.total;
+                    
+                    document.getElementById('totalTableCount').textContent = totalTables;
+                    
+                    displayTables();
+                    updatePagination();
+                })
+                .catch(error => {
+                    console.error('加载表列表错误:', error);
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center text-danger">
+                                <i class="fa fa-exclamation-circle"></i> 加载表列表失败：${error.message}
+                                <br><small class="text-muted">请检查数据库连接是否正常</small>
+                                <br><button class="btn btn-sm btn-primary mt-2" onclick="loadTables()">
+                                    <i class="fa fa-refresh"></i> 重试
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+        }
+
+        // 显示表列表
+        function displayTables() {
+            const tbody = document.getElementById('tablesTableBody');
+            tbody.innerHTML = '';
+
+            if (!tablesList || tablesList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">没有找到任何表</td></tr>';
+                return;
+            }
+
+            tablesList.forEach(table => {
+                const row = document.createElement('tr');
+                row.className = 'table-item';
+                
+                // 检查是否已选中
+                const isSelected = selectedTables.includes(table.tableName);
+                if (isSelected) {
+                    row.classList.add('selected');
+                }
+                
+                row.innerHTML = `
+                    <td>
+                        <input type="checkbox" class="table-checkbox" value="${table.tableName}" 
+                               onchange="toggleTable(this)" ${isSelected ? 'checked' : ''}>
+                    </td>
+                    <td>${table.tableName}</td>
+                    <td>${table.className}</td>
+                    <td id="comment-${table.tableName}">
+                        <span class="text-muted">点击获取详细信息</span>
+                    </td>
+                    <td id="count-${table.tableName}">
+                        <span class="text-muted">-</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="loadTableDetail('${table.tableName}')" 
+                                id="detail-btn-${table.tableName}">
+                            <i class="fa fa-info-circle"></i> 查看详情
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+                
+                // 如果缓存中有详细信息，直接显示
+                if (tableDetailsCache[table.tableName]) {
+                    const detail = tableDetailsCache[table.tableName];
+                    document.getElementById(`comment-${table.tableName}`).textContent = detail.tableComment || '-';
+                    document.getElementById(`count-${table.tableName}`).textContent = detail.columnCount || 0;
+                    document.getElementById(`detail-btn-${table.tableName}`).innerHTML = '<i class="fa fa-check-circle text-success"></i> 已加载';
+                }
+            });
+            
+            // 更新全选复选框状态
+            updateSelectAllCheckbox();
+        }
+
+        // 加载表详细信息
+        function loadTableDetail(tableName) {
+            // 如果已经加载过，直接返回
+            if (tableDetailsCache[tableName]) {
+                return;
+            }
+            
+            const button = document.getElementById(`detail-btn-${tableName}`);
+            const commentCell = document.getElementById(`comment-${tableName}`);
+            const countCell = document.getElementById(`count-${tableName}`);
+            
+            // 显示加载状态
+            button.disabled = true;
+            button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 加载中...';
+            commentCell.innerHTML = '<span class="text-info">加载中...</span>';
+            countCell.innerHTML = '<span class="text-info">-</span>';
+            
+            fetch(`/code-gen/table-detail/${currentConfigId}/${tableName}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('获取表详细信息失败: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(detail => {
+                    console.log(`获取表 ${tableName} 详细信息:`, detail);
+                    
+                    // 缓存详细信息
+                    tableDetailsCache[tableName] = detail;
+                    
+                    // 更新显示
+                    commentCell.textContent = detail.tableComment || '-';
+                    countCell.textContent = detail.columnCount || 0;
+                    button.innerHTML = '<i class="fa fa-check-circle text-success"></i> 已加载';
+                    button.disabled = false;
+                })
+                .catch(error => {
+                    console.error(`加载表 ${tableName} 详细信息错误:`, error);
+                    commentCell.innerHTML = '<span class="text-danger">加载失败</span>';
+                    countCell.innerHTML = '<span class="text-danger">-</span>';
+                    button.innerHTML = '<i class="fa fa-exclamation-circle text-danger"></i> 重试';
+                    button.disabled = false;
+                });
+        }
+        
+        // 更新分页导航
+        function updatePagination() {
+            const paginationContainer = document.getElementById('paginationContainer');
+            const pagination = document.getElementById('pagination');
+            const currentPageInfo = document.getElementById('currentPageInfo');
+            
+            if (totalPages <= 1) {
+                paginationContainer.style.display = 'none';
+                return;
+            }
+            
+            paginationContainer.style.display = 'flex';
+            
+            // 更新页面信息
+            const start = (currentPage - 1) * pageSize + 1;
+            const end = Math.min(currentPage * pageSize, totalTables);
+            currentPageInfo.textContent = `${start}-${end} 条，共 ${totalTables} 条`;
+            
+            // 生成分页按钮
+            pagination.innerHTML = '';
+            
+            // 上一页按钮
+            const prevLi = document.createElement('li');
+            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prevLi.innerHTML = `<a class="page-link" href="#" onclick="loadPage(${currentPage - 1})">上一页</a>`;
+            pagination.appendChild(prevLi);
+            
+            // 页码按钮
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+            
+            if (startPage > 1) {
+                const li = document.createElement('li');
+                li.className = 'page-item';
+                li.innerHTML = '<a class="page-link" href="#" onclick="loadPage(1)">1</a>';
+                pagination.appendChild(li);
+                
+                if (startPage > 2) {
+                    const li = document.createElement('li');
+                    li.className = 'page-item disabled';
+                    li.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(li);
+                }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const li = document.createElement('li');
+                li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                li.innerHTML = `<a class="page-link" href="#" onclick="loadPage(${i})">${i}</a>`;
+                pagination.appendChild(li);
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const li = document.createElement('li');
+                    li.className = 'page-item disabled';
+                    li.innerHTML = '<span class="page-link">...</span>';
+                    pagination.appendChild(li);
+                }
+                
+                const li = document.createElement('li');
+                li.className = 'page-item';
+                li.innerHTML = `<a class="page-link" href="#" onclick="loadPage(${totalPages})">${totalPages}</a>`;
+                pagination.appendChild(li);
+            }
+            
+            // 下一页按钮
+            const nextLi = document.createElement('li');
+            nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+            nextLi.innerHTML = `<a class="page-link" href="#" onclick="loadPage(${currentPage + 1})">下一页</a>`;
+            pagination.appendChild(nextLi);
+        }
+        
+        // 加载指定页码
+        function loadPage(page) {
+            if (page < 1 || page > totalPages || page === currentPage) {
+                return;
+            }
+            
+            currentPage = page;
+            loadTables();
+        }
+        
+        // 更新全选复选框状态
+        function updateSelectAllCheckbox() {
+            const checkboxes = document.querySelectorAll('.table-checkbox');
+            const checkedBoxes = document.querySelectorAll('.table-checkbox:checked');
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            
+            if (checkboxes.length === 0) {
+                selectAllCheckbox.indeterminate = false;
+                selectAllCheckbox.checked = false;
+            } else if (checkedBoxes.length === checkboxes.length) {
+                selectAllCheckbox.indeterminate = false;
+                selectAllCheckbox.checked = true;
+            } else if (checkedBoxes.length > 0) {
+                selectAllCheckbox.indeterminate = true;
+                selectAllCheckbox.checked = false;
+            } else {
+                selectAllCheckbox.indeterminate = false;
+                selectAllCheckbox.checked = false;
+            }
+        }
+        // 切换表选择
+        function toggleTable(checkbox) {
+            const tableName = checkbox.value;
+            if (checkbox.checked) {
+                if (!selectedTables.includes(tableName)) {
+                    selectedTables.push(tableName);
+                }
+                checkbox.closest('tr').classList.add('selected');
+            } else {
+                selectedTables = selectedTables.filter(t => t !== tableName);
+                checkbox.closest('tr').classList.remove('selected');
+            }
+            updateSelectedCount();
+            updateSelectAllCheckbox();
+        }
+
+        // 全选/全不选当前页
+        function toggleAllTables(checked) {
+            document.querySelectorAll('.table-checkbox').forEach(checkbox => {
+                if (checkbox.checked !== checked) {
+                    checkbox.checked = checked;
+                    toggleTable(checkbox);
+                }
+            });
+        }
+
+        // 全选所有表（所有页）
+        function selectAllTables() {
+            if (!tablesList || tablesList.length === 0) {
+                alert('请先加载表列表');
+                return;
+            }
+            
+            // 如果总表数量大于当前页表数量，提示用户
+            if (totalTables > tablesList.length) {
+                if (!confirm(`将会选中所有 ${totalTables} 个表（包括其他页的表），确定吗？`)) {
+                    return;
+                }
+                // 加载所有表名
+                loadAllTablesForSelection();
+            } else {
+                // 只选中当前页
+                document.querySelectorAll('.table-checkbox').forEach(checkbox => {
+                    checkbox.checked = true;
+                    toggleTable(checkbox);
+                });
+            }
+        }
+
+        // 全不选
+        function deselectAllTables() {
+            selectedTables = [];
+            document.querySelectorAll('.table-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+                checkbox.closest('tr').classList.remove('selected');
+            });
+            updateSelectedCount();
+            updateSelectAllCheckbox();
+        }
+        
+        // 加载所有表名用于全选
+        function loadAllTablesForSelection() {
+            fetch(`/code-gen/tables/${currentConfigId}/simple`)
+                .then(response => response.json())
+                .then(allTables => {
+                    selectedTables = allTables.map(table => table.tableName);
+                    updateSelectedCount();
+                    
+                    // 更新当前页的复选框状态
+                    document.querySelectorAll('.table-checkbox').forEach(checkbox => {
+                        checkbox.checked = selectedTables.includes(checkbox.value);
+                        if (checkbox.checked) {
+                            checkbox.closest('tr').classList.add('selected');
+                        }
+                    });
+                    updateSelectAllCheckbox();
+                })
+                .catch(error => {
+                    console.error('加载所有表名失败:', error);
+                    alert('加载所有表名失败');
+                });
+        }
+
+        // 更新选中数量
+        function updateSelectedCount() {
+            document.getElementById('selectedTableCount').textContent = selectedTables.length;
+            document.getElementById('nextToConfig').disabled = selectedTables.length === 0;
+        }
+
+        // 显示生成摘要
+        function showGenerateSummary() {
+            const packageName = document.getElementById('packageName').value;
+            const outputPath = document.getElementById('outputPath').value;
+            
+            const selectedTemplates = [];
+            document.querySelectorAll('#templateContainer input[type="checkbox"]:checked').forEach(checkbox => {
+                const label = checkbox.nextElementSibling.textContent.trim();
+                selectedTemplates.push(label);
+            });
+
+            const summaryHtml = `
+                <div class="alert alert-info">
+                    <h6>生成配置摘要：</h6>
+                    <ul class="mb-0">
+                        <li><strong>数据库：</strong>${document.getElementById('databaseSelect').selectedOptions[0].text}</li>
+                        <li><strong>选中表：</strong>${selectedTables.length} 个 (${selectedTables.join(', ')})</li>
+                        <li><strong>包名：</strong>${packageName}</li>
+                        <li><strong>输出路径：</strong>${outputPath}</li>
+                        <li><strong>模板：</strong>${selectedTemplates.join(', ')}</li>
+                    </ul>
+                </div>
+            `;
+            
+            document.getElementById('generateSummary').innerHTML = summaryHtml;
+        }
+
+        // 生成代码
+        function generateCode() {
+            const request = {
+                configId: currentConfigId,
+                packageName: document.getElementById('packageName').value,
+                outputPath: document.getElementById('outputPath').value,
+                selectedTables: selectedTables,
+                selectedTemplates: []
+            };
+
+            // 获取选中的模板
+            document.querySelectorAll('#templateContainer input[type="checkbox"]:checked').forEach(checkbox => {
+                request.selectedTemplates.push(checkbox.value);
+            });
+
+            // 显示加载状态
+            const generateBtn = event.target;
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 生成中...';
+
+            fetch('/code-gen/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(request)
+            })
+            .then(response => response.text())
+            .then(data => {
+                const resultDiv = document.getElementById('generateResult');
+                if (data.includes('成功')) {
+                    resultDiv.innerHTML = `<div class="alert alert-success"><i class="fa fa-check-circle"></i> ${data}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ${data}</div>`;
+                }
+                resultDiv.style.display = 'block';
+            })
+            .catch(error => {
+                const resultDiv = document.getElementById('generateResult');
+                resultDiv.innerHTML = `<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> 生成失败：${error}</div>`;
+                resultDiv.style.display = 'block';
+            })
+            .finally(() => {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '<i class="fa fa-magic"></i> 生成代码';
+            });
+        }
+
+        // 预览代码
+        function previewCode() {
+            const request = {
+                configId: currentConfigId,
+                packageName: document.getElementById('packageName').value,
+                outputPath: document.getElementById('outputPath').value,
+                selectedTables: selectedTables,
+                selectedTemplates: []
+            };
+
+            // 获取选中的模板
+            document.querySelectorAll('#templateContainer input[type="checkbox"]:checked').forEach(checkbox => {
+                request.selectedTemplates.push(checkbox.value);
+            });
+
+            if (selectedTables.length === 0) {
+                alert('请先选择要生成的表');
+                return;
+            }
+
+            if (request.selectedTemplates.length === 0) {
+                alert('请先选择要生成的模板');
+                return;
+            }
+            
+            // 显示加载状态
+            const previewBtn = event.target;
+            const originalContent = previewBtn.innerHTML;
+            previewBtn.disabled = true;
+            previewBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 预览中...';
+            
+            // 隐藏预览容器
+            document.getElementById('previewContainer').style.display = 'none';
+            document.getElementById('generateResult').style.display = 'none';
+
+            fetch('/code-gen/preview', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(request)
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('预览结果:', result);
+                
+                if (result.success && result.files && result.files.length > 0) {
+                    previewFiles = result.files;
+                    displayPreviewFiles();
+                    document.getElementById('previewContainer').style.display = 'block';
+                } else {
+                    document.getElementById('generateResult').innerHTML = 
+                        `<div class="alert alert-danger">
+                            <i class="fa fa-exclamation-circle"></i> ${result.message || '预览失败'}
+                        </div>`;
+                    document.getElementById('generateResult').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('预览错误:', error);
+                document.getElementById('generateResult').innerHTML = 
+                    `<div class="alert alert-danger">
+                        <i class="fa fa-exclamation-circle"></i> 预览失败：${error.message}
+                    </div>`;
+                document.getElementById('generateResult').style.display = 'block';
+            })
+            .finally(() => {
+                previewBtn.disabled = false;
+                previewBtn.innerHTML = originalContent;
+            });
+        }
+        
+        // 显示预览文件列表
+        function displayPreviewFiles() {
+            const fileList = document.getElementById('fileList');
+            const fileCount = document.getElementById('fileCount');
+            
+            fileList.innerHTML = '';
+            fileCount.textContent = previewFiles.length;
+            currentFileIndex = -1;
+            
+            previewFiles.forEach((file, index) => {
+                const item = document.createElement('div');
+                item.className = 'list-group-item file-item';
+                item.onclick = () => selectFile(index);
+                
+                const icon = getFileIcon(file.fileType);
+                const fileName = file.fileName;
+                const filePath = file.filePath.replace(/\\/g, '/');
+                
+                item.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <i class="fa ${icon} me-2"></i>
+                        <div class="flex-grow-1">
+                            <div class="fw-bold" style="font-size: 14px;">${fileName}</div>
+                            <small class="text-muted" style="font-size: 12px;">${filePath}</small>
+                        </div>
+                    </div>
+                `;
+                
+                fileList.appendChild(item);
+            });
+            
+            // 默认选中第一个文件
+            if (previewFiles.length > 0) {
+                selectFile(0);
+            }
+        }
+        
+        // 选择文件
+        function selectFile(index) {
+            if (index < 0 || index >= previewFiles.length) return;
+            
+            // 更新选中状态
+            document.querySelectorAll('.file-item').forEach((item, i) => {
+                if (i === index) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            currentFileIndex = index;
+            const file = previewFiles[index];
+            
+            // 更新文件名显示
+            const icon = getFileIcon(file.fileType);
+            document.getElementById('currentFileName').innerHTML = 
+                `<i class="fa ${icon}"></i> ${file.fileName}`;
+            
+            // 显示代码内容
+            const codeContent = document.getElementById('codeContent');
+            codeContent.innerHTML = `<code class="language-${file.fileType}">${escapeHtml(file.content)}</code>`;
+            
+            // 显示操作按钮
+            document.getElementById('copyBtn').style.display = 'inline-block';
+            document.getElementById('downloadBtn').style.display = 'inline-block';
+        }
+        
+        // 获取文件图标
+        function getFileIcon(fileType) {
+            switch (fileType) {
+                case 'java':
+                    return 'fa-file-code-o text-warning';
+                case 'xml':
+                    return 'fa-file-text-o text-success';
+                default:
+                    return 'fa-file-o';
+            }
+        }
+        
+        // HTML转义
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // 复制代码
+        function copyCode() {
+            if (currentFileIndex < 0 || currentFileIndex >= previewFiles.length) return;
+            
+            const file = previewFiles[currentFileIndex];
+            navigator.clipboard.writeText(file.content).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fa fa-check"></i> 已复制';
+                btn.classList.add('btn-success');
+                btn.classList.remove('btn-outline-secondary');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-outline-secondary');
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动选择复制');
+            });
+        }
+        
+        // 下载文件
+        function downloadFile() {
+            if (currentFileIndex < 0 || currentFileIndex >= previewFiles.length) return;
+            
+            const file = previewFiles[currentFileIndex];
+            const blob = new Blob([file.content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = file.fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+        
+        // 加载模板组列表
+        function loadTemplateGroups() {
+            fetch('/template-config/groups')
+                .then(response => response.json())
+                .then(groups => {
+                    templateGroups = groups;
+                    renderTemplateGroupSelect();
+                })
+                .catch(error => {
+                    console.error('加载模板组失败:', error);
+                    alert('加载模板组失败');
+                });
+        }
+        
+        // 渲染模板组下拉列表
+        function renderTemplateGroupSelect() {
+            const select = document.getElementById('templateGroupSelect');
+            select.innerHTML = '<option value="">请选择模板组</option>';
+            
+            templateGroups.forEach(group => {
+                if (group.enabled && group.templates && group.templates.length > 0) {
+                    const option = document.createElement('option');
+                    option.value = group.id;
+                    option.textContent = `${group.name} (${group.templates.length}个模板)`;
+                    select.appendChild(option);
+                }
+            });
+        }
+        
+        // 根据模板组加载模板
+        function loadTemplatesByGroup(groupId) {
+            const container = document.getElementById('templateContainer');
+            
+            if (!groupId) {
+                container.innerHTML = `
+                    <div class="text-muted text-center p-3">
+                        <i class="fa fa-info-circle"></i> 请先选择模板组
+                    </div>
+                `;
+                return;
+            }
+            
+            const group = templateGroups.find(g => g.id === groupId);
+            if (!group || !group.templates || group.templates.length === 0) {
+                container.innerHTML = `
+                    <div class="text-muted text-center p-3">
+                        <i class="fa fa-exclamation-circle"></i> 该模板组下暂无可用模板
+                    </div>
+                `;
+                return;
+            }
+            
+            currentGroupTemplates = group.templates;
+            renderTemplateCheckboxes();
+        }
+        
+        // 渲染模板复选框
+        function renderTemplateCheckboxes() {
+            const container = document.getElementById('templateContainer');
+            container.innerHTML = '';
+            
+            currentGroupTemplates.forEach((template, index) => {
+                if (template.enabled) {
+                    const div = document.createElement('div');
+                    div.className = 'form-check mb-2';
+                    
+                    const icon = getTemplateIcon(template.templateType);
+                    const color = getTemplateColor(template.templateType);
+                    
+                    div.innerHTML = `
+                        <input class="form-check-input" type="checkbox" id="template_${index}" value="${template.name}" checked>
+                        <label class="form-check-label" for="template_${index}">
+                            <i class="fa ${icon} ${color}"></i> ${template.displayName}
+                        </label>
+                    `;
+                    
+                    container.appendChild(div);
+                }
+            });
+        }
+        
+        // 获取模板图标
+        function getTemplateIcon(templateType) {
+            switch (templateType) {
+                case 'java': return 'fa-file-code-o';
+                case 'xml': return 'fa-file-text-o';
+                case 'sql': return 'fa-database';
+                case 'config': return 'fa-cog';
+                default: return 'fa-file-o';
+            }
+        }
+        
+        // 获取模板颜色
+        function getTemplateColor(templateType) {
+            switch (templateType) {
+                case 'java': return 'text-primary';
+                case 'xml': return 'text-danger';
+                case 'sql': return 'text-warning';
+                case 'config': return 'text-info';
+                default: return 'text-secondary';
+            }
+        }
+    </script>
+</body>
+</html>
