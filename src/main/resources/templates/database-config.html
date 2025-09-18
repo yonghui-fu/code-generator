@@ -79,6 +79,7 @@
                                     <thead>
                                         <tr>
                                             <th>名称</th>
+                                            <th>类型</th>
                                             <th>主机</th>
                                             <th>端口</th>
                                             <th>数据库</th>
@@ -90,6 +91,7 @@
                                     <tbody>
                                         <tr th:each="config : ${configs}">
                                             <td th:text="${config.name}"></td>
+                                            <td th:text="${config.dbType}"></td>
                                             <td th:text="${config.host}"></td>
                                             <td th:text="${config.port}"></td>
                                             <td th:text="${config.database}"></td>
@@ -110,7 +112,7 @@
                                             </td>
                                         </tr>
                                         <tr th:if="${#lists.isEmpty(configs)}">
-                                            <td colspan="7" class="text-center text-muted">暂无数据库配置</td>
+                                            <td colspan="8" class="text-center text-muted">暂无数据库配置</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -137,6 +139,15 @@
                         <div class="mb-3">
                             <label for="configName" class="form-label">配置名称</label>
                             <input type="text" class="form-control" id="configName" name="name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="dbType" class="form-label">数据库类型</label>
+                            <select class="form-select" id="dbType" name="dbType" required>
+                                <option value="sqlite">SQLite</option>
+                                <option value="mysql">MySQL</option>
+                                <option value="postgresql">PostgreSQL</option>
+                            </select>
                         </div>
                         
                         <div class="mb-3">
@@ -193,7 +204,7 @@
             console.log('准备保存配置:', config);
             
             // 验证必填字段
-            if (!config.name || !config.host || !config.port || !config.database || !config.username) {
+            if (!config.name || !config.dbType || !config.host || !config.port || !config.database || !config.username) {
                 alert('请填写所有必填字段');
                 return;
             }
@@ -248,6 +259,7 @@
                 // 填充表单
                 document.getElementById('configId').value = config.id || '';
                 document.getElementById('configName').value = config.name || '';
+                document.getElementById('dbType').value = config.dbType || 'sqlite';
                 document.getElementById('host').value = config.host || '';
                 document.getElementById('port').value = config.port || 3306;
                 document.getElementById('database').value = config.database || '';
@@ -293,7 +305,7 @@
         function testConnection(button) {
             const configId = button.getAttribute('data-id');
             const row = button.closest('tr');
-            const statusCell = row.querySelector('td:nth-child(6)');
+            const statusCell = row.querySelector('td:nth-child(7)');
             
             button.disabled = true;
             button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 测试中...';
@@ -324,6 +336,11 @@
         document.getElementById('configModal').addEventListener('hidden.bs.modal', function () {
             document.getElementById('configForm').reset();
             document.getElementById('configId').value = '';
+            // 设置默认值
+            document.getElementById('dbType').value = 'sqlite';
+            document.getElementById('host').value = 'localhost';
+            document.getElementById('port').value = 3306;
+            document.getElementById('charset').value = 'utf8';
         });
     </script>
 </body>

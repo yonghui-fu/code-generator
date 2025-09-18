@@ -5,16 +5,14 @@ package com.hui.codegen.web.dto;
  */
 public class PreviewFileInfo {
     private String fileName;
-    private String filePath;
     private String fileType;
     private String content;
 
     public PreviewFileInfo() {
     }
 
-    public PreviewFileInfo(String fileName, String filePath, String fileType, String content) {
+    public PreviewFileInfo(String fileName, String fileType, String content) {
         this.fileName = fileName;
-        this.filePath = filePath;
         this.fileType = fileType;
         this.content = content;
     }
@@ -25,14 +23,6 @@ public class PreviewFileInfo {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
     }
 
     public String getFileType() {

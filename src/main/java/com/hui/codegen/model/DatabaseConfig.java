@@ -12,12 +12,13 @@ public class DatabaseConfig {
     private String username;
     private String password;
     private String charset;
+    private String dbType; // 数据库类型
     private boolean enabled;
 
     public DatabaseConfig() {
     }
 
-    public DatabaseConfig(String id, String name, String host, String port, String database, String username, String password, String charset, boolean enabled) {
+    public DatabaseConfig(String id, String name, String host, String port, String database, String username, String password, String charset, String dbType, boolean enabled) {
         this.id = id;
         this.name = name;
         this.host = host;
@@ -26,6 +27,7 @@ public class DatabaseConfig {
         this.username = username;
         this.password = password;
         this.charset = charset;
+        this.dbType = dbType;
         this.enabled = enabled;
     }
 
@@ -91,6 +93,14 @@ public class DatabaseConfig {
 
     public void setCharset(String charset) {
         this.charset = charset;
+    }
+
+    public String getDbType() {
+        return dbType;
+    }
+
+    public void setDbType(String dbType) {
+        this.dbType = dbType;
     }
 
     public boolean isEnabled() {

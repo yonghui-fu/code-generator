@@ -17,8 +17,13 @@ public class SQLiteUtil {
     private static final String DB_URL = "jdbc:sqlite:" + DB_PATH;
 
     static {
-        // 初始化数据库
-        initDatabase();
+        try {
+            // 注册JDBC驱动
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.err.println("无法加载SQLite JDBC驱动: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -32,10 +37,8 @@ public class SQLiteUtil {
      * 初始化数据库，创建必要的表
      */
     private static void initDatabase() {
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement()) {
-            
-            // 创建数据库配置表
+        try (Connection conn = getConnection()) {
+            // 创建数据库配置表（如果不存在）
             String createConfigTable = "CREATE TABLE IF NOT EXISTS database_config (" +
                     "id TEXT PRIMARY KEY," +
                     "name TEXT NOT NULL," +
@@ -45,12 +48,18 @@ public class SQLiteUtil {
                     "username TEXT NOT NULL," +
                     "password TEXT," +
                     "charset TEXT DEFAULT 'utf8'," +
+                    "db_type TEXT DEFAULT 'sqlite'," +
                     "enabled INTEGER DEFAULT 1," +
                     "created_time DATETIME DEFAULT CURRENT_TIMESTAMP," +
                     "updated_time DATETIME DEFAULT CURRENT_TIMESTAMP" +
                     ")";
             
-            stmt.execute(createConfigTable);
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute(createConfigTable);
+            }
+            
+            // 检查并更新表结构
+            updateTableStructure(conn);
             
             // 创建模板组表
             String createTemplateGroupTable = "CREATE TABLE IF NOT EXISTS template_group (" +
@@ -63,7 +72,9 @@ public class SQLiteUtil {
                     "updated_time DATETIME DEFAULT CURRENT_TIMESTAMP" +
                     ")";
             
-            stmt.execute(createTemplateGroupTable);
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute(createTemplateGroupTable);
+            }
             
             // 创建模板信息表
             String createTemplateInfoTable = "CREATE TABLE IF NOT EXISTS template_info (" +
@@ -80,7 +91,9 @@ public class SQLiteUtil {
                     "FOREIGN KEY (group_id) REFERENCES template_group(id)" +
                     ")";
             
-            stmt.execute(createTemplateInfoTable);
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute(createTemplateInfoTable);
+            }
             
             // 创建模板内容表
             String createTemplateContentTable = "CREATE TABLE IF NOT EXISTS template_content (" +
@@ -91,7 +104,9 @@ public class SQLiteUtil {
                     "FOREIGN KEY (template_name) REFERENCES template_info(name)" +
                     ")";
             
-            stmt.execute(createTemplateContentTable);
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute(createTemplateContentTable);
+            }
             
             // 初始化默认数据
             initDefaultData(conn);
@@ -101,6 +116,32 @@ public class SQLiteUtil {
         } catch (SQLException e) {
             System.err.println("初始化SQLite数据库失败: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 检查并更新表结构
+     */
+    private static void updateTableStructure(Connection conn) throws SQLException {
+        // 检查database_config表是否存在db_type列，如果不存在则添加
+        try (Statement stmt = conn.createStatement()) {
+            // 尝试查询db_type列，如果不存在会抛出异常
+            stmt.executeQuery("SELECT db_type FROM database_config LIMIT 1");
+            System.out.println("database_config表已包含db_type列");
+        } catch (SQLException e) {
+            // 如果db_type列不存在，添加该列
+            if (e.getMessage().contains("no such column") || e.getMessage().contains("db_type")) {
+                try (Statement stmt = conn.createStatement()) {
+                    stmt.execute("ALTER TABLE database_config ADD COLUMN db_type TEXT DEFAULT 'sqlite'");
+                    System.out.println("已为database_config表添加db_type列");
+                } catch (SQLException alterException) {
+                    // 如果ALTER语句也失败，可能是其他问题
+                    System.err.println("添加db_type列失败: " + alterException.getMessage());
+                }
+            } else {
+                // 其他SQL异常
+                System.err.println("检查db_type列时发生错误: " + e.getMessage());
+            }
         }
     }
     

@@ -55,9 +55,13 @@ public class CodeGenController {
                                          @RequestParam(defaultValue = "1") int page,
                                          @RequestParam(defaultValue = "20") int size) {
         try {
-            // 使用SQLite，不需要实际配置
-            DatabaseConfig config = new DatabaseConfig();
-            config.setDatabase("sqlite");
+            // 根据配置ID获取数据库配置
+            DatabaseConfig config = databaseConfigService.getConfigById(configId);
+            if (config == null) {
+                System.err.println("未找到ID为 " + configId + " 的数据库配置");
+                // 返回空结果
+                return new TablePageResult(new ArrayList<>(), 0, 0, page, size);
+            }
             return databaseTableService.getTablesByPage(config, page, size);
         } catch (Exception e) {
             System.err.println("获取表列表失败: " + e.getMessage());
@@ -74,9 +78,12 @@ public class CodeGenController {
     @ResponseBody
     public List<TableInfo> getSimpleTables(@PathVariable String configId) {
         try {
-            // 使用SQLite，不需要实际配置
-            DatabaseConfig config = new DatabaseConfig();
-            config.setDatabase("sqlite");
+            // 根据配置ID获取数据库配置
+            DatabaseConfig config = databaseConfigService.getConfigById(configId);
+            if (config == null) {
+                System.err.println("未找到ID为 " + configId + " 的数据库配置");
+                return new ArrayList<>();
+            }
             return databaseTableService.getSimpleTables(config);
         } catch (Exception e) {
             System.err.println("获取简单表列表失败: " + e.getMessage());
@@ -92,15 +99,21 @@ public class CodeGenController {
     @ResponseBody
     public Map<String, Object> getTableDetail(@PathVariable String configId, @PathVariable String tableName) {
         try {
-            // 使用SQLite，不需要实际配置
-            DatabaseConfig config = new DatabaseConfig();
-            config.setDatabase("sqlite");
+            // 根据配置ID获取数据库配置
+            DatabaseConfig config = databaseConfigService.getConfigById(configId);
+            if (config == null) {
+                System.err.println("未找到ID为 " + configId + " 的数据库配置");
+                Map<String, Object> result = new HashMap<>();
+                result.put("tableComment", "获取失败：未找到数据库配置");
+                result.put("columnCount", 0);
+                return result;
+            }
             return databaseTableService.getTableDetail(config, tableName);
         } catch (Exception e) {
             System.err.println("获取表详细信息失败: " + e.getMessage());
             e.printStackTrace();
             Map<String, Object> result = new HashMap<>();
-            result.put("tableComment", "获取失败");
+            result.put("tableComment", "获取失败: " + e.getMessage());
             result.put("columnCount", 0);
             return result;
         }

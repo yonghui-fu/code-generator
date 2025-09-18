@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -51,19 +53,6 @@ public class TemplateConfigController {
     public String saveTemplate(@RequestParam String templateName, @RequestParam String content) {
         try {
             return templateConfigService.saveTemplateContent(templateName, content);
-        } catch (Exception e) {
-            return "error: " + e.getMessage();
-        }
-    }
-
-    /**
-     * 重置模板为默认内容
-     */
-    @PostMapping("/reset/{templateName}")
-    @ResponseBody
-    public String resetTemplate(@PathVariable String templateName) {
-        try {
-            return templateConfigService.resetTemplate(templateName);
         } catch (Exception e) {
             return "error: " + e.getMessage();
         }
@@ -118,6 +107,19 @@ public class TemplateConfigController {
     }
     
     /**
+     * 更新模板组
+     */
+    @PostMapping("/groups/update")
+    @ResponseBody
+    public String updateTemplateGroup(@RequestBody TemplateGroup templateGroup) {
+        try {
+            return templateConfigService.updateTemplateGroup(templateGroup);
+        } catch (Exception e) {
+            return "error: " + e.getMessage();
+        }
+    }
+    
+    /**
      * 删除模板组
      */
     @DeleteMapping("/groups/delete/{groupId}")
@@ -141,6 +143,81 @@ public class TemplateConfigController {
             return "success";
         } catch (Exception e) {
             return "error: " + e.getMessage();
+        }
+    }
+    
+    /**
+     * 导出所有模板
+     */
+    @GetMapping("/export")
+    public void exportTemplates(HttpServletResponse response) {
+        try {
+            templateConfigService.exportTemplates(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 导出指定模板组的模板
+     */
+    @GetMapping("/export/{groupId}")
+    public void exportTemplatesByGroup(@PathVariable String groupId, HttpServletResponse response) {
+        try {
+            templateConfigService.exportTemplatesByGroup(response, groupId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 导入模板
+     */
+    @PostMapping("/import")
+    @ResponseBody
+    public String importTemplates(@RequestParam("file") MultipartFile file) {
+        try {
+            return templateConfigService.importTemplates(file);
+        } catch (Exception e) {
+            return "导入失败: " + e.getMessage();
+        }
+    }
+    
+    /**
+     * 导入模板到指定模板组
+     */
+    @PostMapping("/import/{groupId}")
+    @ResponseBody
+    public String importTemplatesToGroup(@PathVariable String groupId, @RequestParam("file") MultipartFile file) {
+        try {
+            System.out.println("收到导入模板请求，目标组ID: " + groupId);
+            // 检查文件是否为空
+            if (file.isEmpty()) {
+                System.err.println("上传的文件为空");
+                return "导入失败: 上传的文件为空";
+            }
+            
+            // 检查groupId是否为空
+            if (groupId == null || groupId.trim().isEmpty()) {
+                System.err.println("目标组ID为空");
+                return "导入失败: 目标组ID不能为空";
+            }
+            
+            System.out.println("文件大小: " + file.getSize() + " 字节");
+            System.out.println("文件名称: " + file.getOriginalFilename());
+            
+            String result = templateConfigService.importTemplatesToGroup(file, groupId);
+            System.out.println("导入模板完成，结果: " + result);
+            return result;
+        } catch (Exception e) {
+            System.err.println("导入模板到组时发生异常: " + e.getMessage());
+            e.printStackTrace();
+            // 返回更详细的错误信息
+            String errorMsg = "导入失败: " + e.getMessage();
+            if (e.getCause() != null) {
+                errorMsg += " (原因: " + e.getCause().getMessage() + ")";
+            }
+            return errorMsg;
         }
     }
 }

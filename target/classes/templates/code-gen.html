@@ -238,7 +238,7 @@
                         </div>
                         
                         <!-- 分页导航 -->
-                        <div class="d-flex justify-content-between align-items-center mt-3" id="paginationContainer" style="display: none !important;">
+                        <div class="d-flex justify-content-between align-items-center mt-3" id="paginationContainer">
                             <div class="text-muted">
                                 显示 <span id="currentPageInfo"></span>
                             </div>
@@ -304,9 +304,6 @@
                         <h5 class="mb-0">步骤4: 生成代码</h5>
                     </div>
                     <div class="card-body">
-                        <div id="generateSummary" class="mb-4">
-                            <!-- 生成摘要将通过JS填充 -->
-                        </div>
                         <div class="row mb-3">
                             <div class="col-12 text-center">
                                 <button type="button" class="btn btn-secondary me-2" onclick="previousStep(3)">
@@ -443,7 +440,6 @@
                     break;
                 case 4:
                     document.getElementById('generateStep').style.display = 'block';
-                    showGenerateSummary();
                     break;
             }
         }
@@ -790,33 +786,6 @@
             document.getElementById('nextToConfig').disabled = selectedTables.length === 0;
         }
 
-        // 显示生成摘要
-        function showGenerateSummary() {
-            const packageName = document.getElementById('packageName').value;
-            const outputPath = document.getElementById('outputPath').value;
-            
-            const selectedTemplates = [];
-            document.querySelectorAll('#templateContainer input[type="checkbox"]:checked').forEach(checkbox => {
-                const label = checkbox.nextElementSibling.textContent.trim();
-                selectedTemplates.push(label);
-            });
-
-            const summaryHtml = `
-                <div class="alert alert-info">
-                    <h6>生成配置摘要：</h6>
-                    <ul class="mb-0">
-                        <li><strong>数据库：</strong>${document.getElementById('databaseSelect').selectedOptions[0].text}</li>
-                        <li><strong>选中表：</strong>${selectedTables.length} 个 (${selectedTables.join(', ')})</li>
-                        <li><strong>包名：</strong>${packageName}</li>
-                        <li><strong>输出路径：</strong>${outputPath}</li>
-                        <li><strong>模板：</strong>${selectedTemplates.join(', ')}</li>
-                    </ul>
-                </div>
-            `;
-            
-            document.getElementById('generateSummary').innerHTML = summaryHtml;
-        }
-
         // 生成代码
         function generateCode() {
             const request = {
@@ -953,14 +922,12 @@
                 
                 const icon = getFileIcon(file.fileType);
                 const fileName = file.fileName;
-                const filePath = file.filePath.replace(/\\/g, '/');
                 
                 item.innerHTML = `
                     <div class="d-flex align-items-center">
                         <i class="fa ${icon} me-2"></i>
                         <div class="flex-grow-1">
                             <div class="fw-bold" style="font-size: 14px;">${fileName}</div>
-                            <small class="text-muted" style="font-size: 12px;">${filePath}</small>
                         </div>
                     </div>
                 `;

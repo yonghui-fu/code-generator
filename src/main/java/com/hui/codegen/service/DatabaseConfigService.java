@@ -26,12 +26,12 @@ public class DatabaseConfigService {
         if (config.getId() == null || config.getId().trim().isEmpty()) {
             isNew = true;
             config.setId(UUID.randomUUID().toString());
-            sql = "INSERT INTO database_config (id, name, host, port, database_name, username, password, charset, enabled, created_time, updated_time) " +
-                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))";
+            sql = "INSERT INTO database_config (id, name, host, port, database_name, username, password, charset, db_type, enabled, created_time, updated_time) " +
+                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))";
         } else {
             // 更新操作
             sql = "UPDATE database_config " +
-                  "SET name=?, host=?, port=?, database_name=?, username=?, password=?, charset=?, enabled=?, updated_time=datetime('now') " +
+                  "SET name=?, host=?, port=?, database_name=?, username=?, password=?, charset=?, db_type=?, enabled=?, updated_time=datetime('now') " +
                   "WHERE id=?";
         }
 
@@ -48,7 +48,8 @@ public class DatabaseConfigService {
                 pstmt.setString(6, config.getUsername());
                 pstmt.setString(7, config.getPassword());
                 pstmt.setString(8, config.getCharset() != null ? config.getCharset() : "utf8");
-                pstmt.setInt(9, config.isEnabled() ? 1 : 0);
+                pstmt.setString(9, config.getDbType() != null ? config.getDbType() : "sqlite");
+                pstmt.setInt(10, config.isEnabled() ? 1 : 0);
             } else {
                 // 更新
                 pstmt.setString(1, config.getName());
@@ -58,8 +59,9 @@ public class DatabaseConfigService {
                 pstmt.setString(5, config.getUsername());
                 pstmt.setString(6, config.getPassword());
                 pstmt.setString(7, config.getCharset() != null ? config.getCharset() : "utf8");
-                pstmt.setInt(8, config.isEnabled() ? 1 : 0);
-                pstmt.setString(9, config.getId());
+                pstmt.setString(8, config.getDbType() != null ? config.getDbType() : "sqlite");
+                pstmt.setInt(9, config.isEnabled() ? 1 : 0);
+                pstmt.setString(10, config.getId());
             }
             
             int result = pstmt.executeUpdate();
@@ -93,6 +95,7 @@ public class DatabaseConfigService {
                 config.setUsername(rs.getString("username"));
                 config.setPassword(rs.getString("password"));
                 config.setCharset(rs.getString("charset"));
+                config.setDbType(rs.getString("db_type"));
                 config.setEnabled(rs.getInt("enabled") == 1);
                 configs.add(config);
             }
@@ -127,6 +130,7 @@ public class DatabaseConfigService {
                     config.setUsername(rs.getString("username"));
                     config.setPassword(rs.getString("password"));
                     config.setCharset(rs.getString("charset"));
+                    config.setDbType(rs.getString("db_type"));
                     config.setEnabled(rs.getInt("enabled") == 1);
                     return config;
                 }
@@ -170,9 +174,27 @@ public class DatabaseConfigService {
             return "配置不存在";
         }
         
-        // 因为现在只使用SQLite，直接测试SQLite连接
-        try (Connection conn = SQLiteUtil.getConnection()) {
-            return "连接成功 - 使用SQLite数据库";
+        // 根据数据库类型测试连接
+        try {
+            String dbType = config.getDbType();
+            if ("sqlite".equalsIgnoreCase(dbType)) {
+                try (Connection conn = SQLiteUtil.getConnection()) {
+                    return "连接成功 - 使用SQLite数据库";
+                }
+            } else if ("mysql".equalsIgnoreCase(dbType)) {
+                String url = "jdbc:mysql://" + config.getHost() + ":" + config.getPort() + "/" + config.getDatabase() + 
+                            "?useUnicode=true&characterEncoding=" + config.getCharset();
+                try (Connection conn = DriverManager.getConnection(url, config.getUsername(), config.getPassword())) {
+                    return "连接成功 - 使用MySQL数据库";
+                }
+            } else if ("postgresql".equalsIgnoreCase(dbType)) {
+                String url = "jdbc:postgresql://" + config.getHost() + ":" + config.getPort() + "/" + config.getDatabase();
+                try (Connection conn = DriverManager.getConnection(url, config.getUsername(), config.getPassword())) {
+                    return "连接成功 - 使用PostgreSQL数据库";
+                }
+            } else {
+                return "不支持的数据库类型: " + dbType;
+            }
         } catch (SQLException e) {
             return "连接失败: " + e.getMessage();
         }

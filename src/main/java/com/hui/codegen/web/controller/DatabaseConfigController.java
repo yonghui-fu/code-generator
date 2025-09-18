@@ -49,9 +49,10 @@ public class DatabaseConfigController {
             config.setUsername((String) configMap.get("username"));
             config.setPassword((String) configMap.get("password"));
             config.setCharset((String) configMap.get("charset"));
+            config.setDbType((String) configMap.get("dbType"));
             config.setEnabled(true);
             
-            System.out.println("转换后的配置对象: " + config.getName() + ", " + config.getHost() + ":" + config.getPort());
+            System.out.println("转换后的配置对象: " + config.getName() + ", " + config.getHost() + ":" + config.getPort() + ", 类型: " + config.getDbType());
             
             String result = databaseConfigService.saveConfig(config);
             System.out.println("保存结果: " + result);

@@ -42,6 +42,14 @@
             background-color: #007bff;
             color: white;
         }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .group-actions {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -82,38 +90,42 @@
             <main class="col-md-10 ms-sm-auto main-content">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">模板配置</h1>
-                    <div>
-                        <button type="button" class="btn btn-info me-2" onclick="showAddGroupModal()">
-                            <i class="fa fa-plus"></i> 添加模板组
-                        </button>
-                        <button type="button" class="btn btn-primary me-2" onclick="showAddTemplateModal()">
-                            <i class="fa fa-plus"></i> 添加模板
-                        </button>
-                        <button type="button" class="btn btn-success me-2" onclick="saveTemplate()">
-                            <i class="fa fa-save"></i> 保存模板
-                        </button>
-                        <button type="button" class="btn btn-warning me-2" onclick="resetTemplate()">
-                            <i class="fa fa-refresh"></i> 重置模板
-                        </button>
-                        <button type="button" class="btn btn-danger" onclick="deleteTemplate()">
-                            <i class="fa fa-trash"></i> 删除模板
-                        </button>
-                    </div>
                 </div>
 
                 <!-- 模板组管理上栏 -->
                 <div class="row mb-3">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="card-header group-header">
                                 <h6 class="mb-0">模板组</h6>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteCurrentGroup()" id="deleteGroupBtn" style="display: none;">
-                                    <i class="fa fa-trash"></i> 删除当前组
-                                </button>
                             </div>
                             <div class="card-body p-2">
-                                <div class="btn-group" role="group" id="templateGroupTabs">
-                                    <!-- 模板组标签将通过JavaScript动态生成 -->
+                                <div class="d-flex align-items-center flex-wrap" id="templateGroupContainer">
+                                    <div class="btn-group" role="group" id="templateGroupTabs">
+                                        <!-- 模板组标签将通过JavaScript动态生成 -->
+                                    </div>
+                                    <button type="button" class="btn btn-info btn-sm ms-2" onclick="showAddGroupModal()" id="addGroupButton">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- 模板组操作按钮 -->
+                                <div class="group-actions">
+                                    <button type="button" class="btn btn-primary btn-sm me-1" onclick="showAddTemplateModal()">
+                                        <i class="fa fa-plus"></i> 添加模板
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm me-1" onclick="saveTemplate()">
+                                        <i class="fa fa-save"></i> 保存模板
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm me-1" onclick="deleteTemplate()">
+                                        <i class="fa fa-trash"></i> 删除模板
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-sm me-1" onclick="exportTemplates()">
+                                        <i class="fa fa-download"></i> 导出模板
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('importFile').click()">
+                                        <i class="fa fa-upload"></i> 导入模板
+                                    </button>
+                                    <input type="file" id="importFile" style="display: none;" accept=".zip" onchange="importTemplates(event)">
                                 </div>
                             </div>
                         </div>
@@ -215,45 +227,13 @@
                         <div class="mb-3">
                             <label for="templateName" class="form-label">模板名称</label>
                             <input type="text" class="form-control" id="templateName" name="templateName" 
-                                   placeholder="请输入模板名称（如：custom.ftl）" required>
-                            <div class="form-text">模板名称必须以.ftl结尾</div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="templateDisplayName" class="form-label">显示名称</label>
-                            <input type="text" class="form-control" id="templateDisplayName" name="displayName" 
-                                   placeholder="请输入显示名称" required>
+                                   placeholder="请输入模板名称（如：custom）" required>
                         </div>
                         
                         <div class="mb-3">
                             <label for="templateDescription" class="form-label">模板描述</label>
                             <textarea class="form-control" id="templateDescription" name="description" 
                                       rows="3" placeholder="请输入模板描述"></textarea>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="templateType" class="form-label">模板类型</label>
-                            <select class="form-select" id="templateType" name="templateType">
-                                <option value="java">Java类</option>
-                                <option value="xml">XML文件</option>
-                                <option value="sql">SQL脚本</option>
-                                <option value="config">配置文件</option>
-                                <option value="other">其他</option>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="templateGroupSelect" class="form-label">所属模板组</label>
-                            <select class="form-select" id="templateGroupSelect" name="groupId">
-                                <!-- 选项将通过JavaScript动态生成 -->
-                            </select>
-                        </div>
-                        
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="templateEnabled" name="enabled" checked>
-                            <label class="form-check-label" for="templateEnabled">
-                                启用模板
-                            </label>
                         </div>
                     </form>
                 </div>
@@ -280,24 +260,37 @@
                             <input type="text" class="form-control" id="groupName" name="groupName" 
                                    placeholder="请输入组名称" required>
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="groupDescription" class="form-label">组描述</label>
-                            <textarea class="form-control" id="groupDescription" name="groupDescription" 
-                                      rows="3" placeholder="请输入组描述"></textarea>
-                        </div>
-                        
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="groupEnabled" name="groupEnabled" checked>
-                            <label class="form-check-label" for="groupEnabled">
-                                启用模板组
-                            </label>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                     <button type="button" class="btn btn-primary" onclick="addTemplateGroup()">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改模板组模态框 -->
+    <div class="modal fade" id="editGroupModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">修改模板组</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editGroupForm">
+                        <input type="hidden" id="editGroupId" name="groupId">
+                        <div class="mb-3">
+                            <label for="editGroupName" class="form-label">组名称</label>
+                            <input type="text" class="form-control" id="editGroupName" name="groupName" 
+                                   placeholder="请输入组名称" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="updateTemplateGroup()">保存</button>
                 </div>
             </div>
         </div>
@@ -329,12 +322,11 @@
         
         // 加载模板组数据
         function loadTemplateGroups() {
-            fetch('/template-config/groups')
+            return fetch('/template-config/groups')
                 .then(response => response.json())
                 .then(groups => {
                     templateGroups = groups;
                     renderTemplateGroups();
-                    renderTemplateGroupSelect();
                     
                     // 默认选中第一个组
                     if (groups.length > 0) {
@@ -344,6 +336,7 @@
                 .catch(error => {
                     console.error('加载模板组失败:', error);
                     alert('加载模板组失败');
+                    throw error; // 重新抛出错误，让调用者可以处理
                 });
         }
         
@@ -353,26 +346,76 @@
             container.innerHTML = '';
             
             templateGroups.forEach((group, index) => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = `btn btn-outline-primary${index === 0 ? ' active' : ''}`;
-                button.setAttribute('data-group-id', group.id);
-                button.onclick = () => selectTemplateGroup(group.id);
-                button.innerHTML = `${group.name} <span class="badge bg-secondary ms-1">${group.templates.length}</span>`;
-                container.appendChild(button);
-            });
-        }
-        
-        // 渲染模板组选择器
-        function renderTemplateGroupSelect() {
-            const select = document.getElementById('templateGroupSelect');
-            select.innerHTML = '';
-            
-            templateGroups.forEach(group => {
-                const option = document.createElement('option');
-                option.value = group.id;
-                option.textContent = group.name;
-                select.appendChild(option);
+                // 只有在当前选中的模板组才显示小齿轮图标
+                if (currentGroup === group.id) {
+                    // 创建一个包含主按钮和下拉按钮的按钮组容器
+                    const groupElement = document.createElement('div');
+                    groupElement.className = 'btn-group';
+                    groupElement.role = 'group';
+                    
+                    // 主按钮 - 模板组名称
+                    const mainButton = document.createElement('button');
+                    mainButton.type = 'button';
+                    mainButton.className = `btn btn-outline-primary${currentGroup === group.id ? ' active' : ''}`;
+                    mainButton.setAttribute('data-group-id', group.id);
+                    mainButton.onclick = () => selectTemplateGroup(group.id);
+                    mainButton.textContent = group.name;
+                    
+                    // 下拉按钮 - 小齿轮图标
+                    const dropdownButton = document.createElement('button');
+                    dropdownButton.type = 'button';
+                    dropdownButton.className = `btn btn-outline-primary dropdown-toggle dropdown-toggle-split${currentGroup === group.id ? ' active' : ''}`;
+                    dropdownButton.setAttribute('data-bs-toggle', 'dropdown');
+                    dropdownButton.setAttribute('aria-expanded', 'false');
+                    dropdownButton.innerHTML = '<i class="fa fa-cog"></i>';
+                    
+                    // 下拉菜单
+                    const dropdownMenu = document.createElement('ul');
+                    dropdownMenu.className = 'dropdown-menu';
+                    
+                    // 修改按钮
+                    const editItem = document.createElement('li');
+                    const editLink = document.createElement('a');
+                    editLink.className = 'dropdown-item';
+                    editLink.href = '#';
+                    editLink.innerHTML = '<i class="fa fa-edit"></i> 修改';
+                    editLink.onclick = (e) => {
+                        e.preventDefault();
+                        showEditGroupModal(group);
+                    };
+                    editItem.appendChild(editLink);
+                    dropdownMenu.appendChild(editItem);
+                    
+                    // 删除按钮
+                    const deleteItem = document.createElement('li');
+                    const deleteLink = document.createElement('a');
+                    deleteLink.className = 'dropdown-item';
+                    deleteLink.href = '#';
+                    deleteLink.innerHTML = '<i class="fa fa-trash"></i> 删除';
+                    deleteLink.onclick = (e) => {
+                        e.preventDefault();
+                        deleteTemplateGroup(group.id);
+                    };
+                    deleteItem.appendChild(deleteLink);
+                    dropdownMenu.appendChild(deleteItem);
+                    
+                    // 组装元素
+                    groupElement.appendChild(mainButton);
+                    groupElement.appendChild(dropdownButton);
+                    groupElement.appendChild(dropdownMenu);
+                    
+                    container.appendChild(groupElement);
+                } else {
+                    // 未选中的模板组只显示名称
+                    const mainButton = document.createElement('button');
+                    mainButton.type = 'button';
+                    mainButton.className = 'btn btn-outline-primary';
+                    mainButton.setAttribute('data-group-id', group.id);
+                    mainButton.onclick = () => selectTemplateGroup(group.id);
+                    mainButton.textContent = group.name;
+                    
+                    container.appendChild(mainButton);
+                }
             });
         }
         
@@ -388,16 +431,26 @@
                 }
             });
             
-            // 显示/隐藏删除组按钮
-            const deleteBtn = document.getElementById('deleteGroupBtn');
-            if (groupId === 'default') {
-                deleteBtn.style.display = 'none';
-            } else {
-                deleteBtn.style.display = 'inline-block';
-            }
+            // 重新渲染模板组列表，确保只有当前选中的模板组显示齿轮图标
+            renderTemplateGroups();
             
-            // 渲染当前组的模板列表
-            renderTemplateList(groupId);
+            // 重新加载数据后再渲染当前组的模板列表，确保显示最新数据
+            loadTemplateGroupsForGroup(groupId);
+        }
+        
+        // 为特定组加载数据并渲染模板列表
+        function loadTemplateGroupsForGroup(groupId) {
+            fetch('/template-config/groups')
+                .then(response => response.json())
+                .then(groups => {
+                    templateGroups = groups;
+                    renderTemplateList(groupId);
+                })
+                .catch(error => {
+                    console.error('加载模板组失败:', error);
+                    // 如果加载失败，仍然尝试渲染当前组
+                    renderTemplateList(groupId);
+                });
         }
         
         // 渲染模板列表
@@ -417,10 +470,11 @@
                 item.setAttribute('data-template', template.name);
                 item.onclick = () => selectTemplate(item);
                 
+                // 使用模板名称而不是显示名称
                 item.innerHTML = `
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="mb-1">${template.displayName}</h6>
+                            <h6 class="mb-1">${template.name}</h6>
                             <small>${template.description}</small>
                         </div>
                         ${template.enabled ? '<span class="badge bg-success">启用</span>' : '<span class="badge bg-secondary">禁用</span>'}
@@ -450,8 +504,8 @@
             const templateName = element.getAttribute('data-template');
             currentTemplate = templateName;
             
-            // 更新标题
-            document.getElementById('currentTemplateName').textContent = element.querySelector('h6').textContent;
+            // 更新标题，使用模板名称而不是显示名称
+            document.getElementById('currentTemplateName').textContent = templateName;
 
             // 加载模板内容
             fetch('/template-config/content/' + templateName)
@@ -502,38 +556,6 @@
             });
         }
 
-        // 重置模板
-        function resetTemplate() {
-            if (!currentTemplate) {
-                alert('请先选择一个模板');
-                return;
-            }
-
-            if (!confirm('确定要重置模板为默认内容吗？此操作不可撤销！')) {
-                return;
-            }
-
-            fetch('/template-config/reset/' + currentTemplate, {
-                method: 'POST'
-            })
-            .then(response => response.text())
-            .then(data => {
-                if (data === 'success') {
-                    alert('重置成功！');
-                    // 重新加载模板内容
-                    const activeTemplate = document.querySelector('.template-item.active');
-                    if (activeTemplate) {
-                        selectTemplate(activeTemplate);
-                    }
-                } else {
-                    alert('重置失败：' + data);
-                }
-            })
-            .catch(error => {
-                alert('重置失败：' + error);
-            });
-        }
-        
         // 显示添加模板模态框
         function showAddTemplateModal() {
             // 清空表单
@@ -547,21 +569,17 @@
             const form = document.getElementById('addTemplateForm');
             const formData = new FormData(form);
             
-            // 验证模板名称
+            // 获取模板名称并在后端自动添加.ftl后缀
             const templateName = formData.get('templateName');
-            if (!templateName.endsWith('.ftl')) {
-                alert('模板名称必须以.ftl结尾');
-                return;
-            }
             
-            // 转换为 JSON
+            // 转换为 JSON，使用简化后的字段
             const templateData = {
-                name: formData.get('templateName'),
-                displayName: formData.get('displayName'),
+                name: templateName,
+                displayName: templateName, // 显示名称默认与模板名称相同
                 description: formData.get('description'),
-                templateType: formData.get('templateType'),
-                groupId: formData.get('groupId'),
-                enabled: formData.get('enabled') === 'on'
+                templateType: 'java', // 默认模板类型
+                groupId: currentGroup, // 使用当前选中的模板组
+                enabled: true // 默认启用
             };
             
             fetch('/template-config/add', {
@@ -591,6 +609,17 @@
         // 显示添加模板组模态框
         function showAddGroupModal() {
             const modal = new bootstrap.Modal(document.getElementById('addGroupModal'));
+            // 清空表单
+            document.getElementById('addGroupForm').reset();
+            modal.show();
+        }
+        
+        // 显示修改模板组模态框
+        function showEditGroupModal(group) {
+            const modal = new bootstrap.Modal(document.getElementById('editGroupModal'));
+            // 填充表单数据
+            document.getElementById('editGroupId').value = group.id;
+            document.getElementById('editGroupName').value = group.name;
             modal.show();
         }
         
@@ -601,8 +630,8 @@
             
             const groupInfo = {
                 name: formData.get('groupName'),
-                description: formData.get('groupDescription'),
-                enabled: formData.get('groupEnabled') === 'on'
+                description: '', // 默认空描述
+                enabled: true // 默认启用
             };
             
             fetch('/template-config/groups/add', {
@@ -629,18 +658,54 @@
             });
         }
         
-        // 删除当前模板组
-        function deleteCurrentGroup() {
-            if (!currentGroup || currentGroup === 'default') {
-                alert('系统默认组不可删除');
+        // 更新模板组
+        function updateTemplateGroup() {
+            const form = document.getElementById('editGroupForm');
+            const formData = new FormData(form);
+            
+            const groupInfo = {
+                id: formData.get('groupId'),
+                name: formData.get('groupName'),
+                description: '', // 默认空描述
+                enabled: true // 默认启用
+            };
+            
+            // 这里需要实现更新模板组的接口
+            // 暂时使用添加组的接口作为示例，实际需要后端支持更新接口
+            fetch('/template-config/groups/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(groupInfo)
+            })
+            .then(response => response.text())
+            .then(result => {
+                if (result === 'success') {
+                    alert('模板组更新成功');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editGroupModal'));
+                    modal.hide();
+                    loadTemplateGroups(); // 重新加载数据
+                } else {
+                    alert(result);
+                }
+            })
+            .catch(error => {
+                alert('更新模板组失败: ' + error);
+            });
+        }
+        
+        // 删除模板组
+        function deleteTemplateGroup(groupId) {
+            // 获取组名用于确认提示
+            const group = templateGroups.find(g => g.id === groupId);
+            const groupName = group ? group.name : '未知组';
+            
+            if (!confirm(`确定要删除模板组 "${groupName}" 吗？这将同时删除该组内的所有模板，删除后无法恢复！`)) {
                 return;
             }
             
-            if (!confirm('确定要删除当前模板组吗？删除后无法恢复！')) {
-                return;
-            }
-            
-            fetch(`/template-config/groups/delete/${currentGroup}`, {
+            fetch(`/template-config/groups/delete/${groupId}`, {
                 method: 'DELETE'
             })
             .then(response => response.text())
@@ -690,6 +755,79 @@
             })
             .catch(error => {
                 alert('删除失败：' + error);
+            });
+        }
+        
+        // 导出模板
+        function exportTemplates() {
+            if (!currentGroup) {
+                alert('请先选择一个模板组');
+                return;
+            }
+            window.location.href = '/template-config/export/' + currentGroup;
+        }
+        
+        // 导入模板
+        function importTemplates(event) {
+            if (!currentGroup) {
+                alert('请先选择一个模板组');
+                event.target.value = '';
+                return;
+            }
+            
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+            
+            console.log('开始导入模板到组:', currentGroup);
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // 显示导入中提示
+            const originalBtnText = document.querySelector('[onclick="document.getElementById(\'importFile\').click()"]').innerHTML;
+            document.querySelector('[onclick="document.getElementById(\'importFile\').click()"]').innerHTML = '<i class="fa fa-spinner fa-spin"></i> 导入中...';
+            
+            fetch('/template-config/import/' + currentGroup, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log('收到服务器响应:', response.status, response.statusText);
+                return response.text();
+            })
+            .then(data => {
+                console.log('导入结果:', data);
+                if (data === 'success') {
+                    alert('模板导入成功！');
+                    // 重新加载数据并确保刷新当前组的模板列表
+                    loadTemplateGroups()
+                        .then(() => {
+                            // 数据加载完成后，确保选择当前组并刷新模板列表
+                            setTimeout(() => {
+                                selectTemplateGroup(currentGroup);
+                            }, 100);
+                        })
+                        .catch(error => {
+                            console.error('重新加载数据失败:', error);
+                            // 即使重新加载失败，也尝试选择当前组
+                            selectTemplateGroup(currentGroup);
+                        });
+                } else {
+                    console.error('导入失败:', data);
+                    alert('导入失败：' + data);
+                }
+            })
+            .catch(error => {
+                console.error('导入请求失败:', error);
+                alert('导入失败：' + error);
+            })
+            .finally(() => {
+                // 清空文件输入框
+                event.target.value = '';
+                // 恢复按钮文本
+                document.querySelector('[onclick="document.getElementById(\'importFile\').click()"]').innerHTML = originalBtnText;
             });
         }
     </script>
