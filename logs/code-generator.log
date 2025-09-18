@@ -882,3 +882,335 @@ public class DsAccessLog {
 2025-09-18 09:47:03.226 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - Started CodeGeneratorApplication in 2.513 seconds (JVM running for 3.463)
 2025-09-18 09:47:08.074 [http-nio-19999-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
 2025-09-18 09:47:08.075 [http-nio-19999-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-09-18 09:55:08.898 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - Starting CodeGeneratorApplication using Java 16.0.2 on SSC-LP-yonghui with PID 360308 (D:\workspace\IdeaProjects\code-generator\target\classes started by 符永辉 in D:\workspace\IdeaProjects\code-generator)
+2025-09-18 09:55:08.910 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-18 09:55:08.956 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-09-18 09:55:08.956 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-09-18 09:55:10.097 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 19999 (http)
+2025-09-18 09:55:10.200 [restartedMain] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1244 ms
+2025-09-18 09:55:10.531 [restartedMain] INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping - Adding welcome page template: index
+2025-09-18 09:55:10.691 [restartedMain] INFO  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-09-18 09:55:10.725 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 19999 (http) with context path ''
+2025-09-18 09:55:10.742 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - Started CodeGeneratorApplication in 2.158 seconds (JVM running for 3.009)
+2025-09-18 09:55:14.365 [http-nio-19999-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-09-18 09:55:14.366 [http-nio-19999-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-09-18 09:55:39.044 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 生成预览请求: com.hui.codegen.web.dto.CodeGenRequest@26601320
+2025-09-18 09:55:39.047 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理表: ds_access_log
+2025-09-18 09:55:39.047 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 表基本信息 - 表名: ds_access_log, 类名: DsAccessLog, 包名: com.example.demo
+2025-09-18 09:55:39.853 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 获取到的列信息: [{nullable=false, javaFieldName=logUid, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=日志主键, columnName=LOG_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=path, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=接口路径, columnName=PATH, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=state, defaultValue=null, dataType=int, autoIncrement=false, columnComment=执行状态码, columnName=STATE, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=duration, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=请求耗时 单位：毫秒, columnName=DURATION, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=ip, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=IP地址, columnName=IP, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=apiUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=api配置id, columnName=API_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=errorMsg, defaultValue=null, dataType=text, autoIncrement=false, columnComment=接口请求信息, columnName=ERROR_MSG, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addTime, defaultValue=null, dataType=datetime, autoIncrement=false, columnComment=请求时间, columnName=ADD_TIME, primaryKey=false, javaType=Date}, {nullable=true, javaFieldName=addUserUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=请求人, columnName=ADD_USER_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=addChannelCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建渠道, columnName=ADD_CHANNEL_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addAppCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建应用, columnName=ADD_APP_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景编号, columnName=BUSINESS_SCENARIOS_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景名称, columnName=BUSINESS_SCENARIOS_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=consumerName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=厂商名称, columnName=CONSUMER_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=systemName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=系统名称, columnName=SYSTEM_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构编码, columnName=ORG_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构名称, columnName=ORG_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=doctorName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=医生名称, columnName=DOCTOR_NAME, primaryKey=false, javaType=String}]
+2025-09-18 09:55:39.863 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 列数量: 18
+2025-09-18 09:55:39.863 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 完整表数据: {columns=[{nullable=false, javaFieldName=logUid, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=日志主键, columnName=LOG_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=path, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=接口路径, columnName=PATH, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=state, defaultValue=null, dataType=int, autoIncrement=false, columnComment=执行状态码, columnName=STATE, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=duration, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=请求耗时 单位：毫秒, columnName=DURATION, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=ip, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=IP地址, columnName=IP, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=apiUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=api配置id, columnName=API_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=errorMsg, defaultValue=null, dataType=text, autoIncrement=false, columnComment=接口请求信息, columnName=ERROR_MSG, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addTime, defaultValue=null, dataType=datetime, autoIncrement=false, columnComment=请求时间, columnName=ADD_TIME, primaryKey=false, javaType=Date}, {nullable=true, javaFieldName=addUserUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=请求人, columnName=ADD_USER_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=addChannelCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建渠道, columnName=ADD_CHANNEL_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addAppCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建应用, columnName=ADD_APP_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景编号, columnName=BUSINESS_SCENARIOS_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景名称, columnName=BUSINESS_SCENARIOS_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=consumerName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=厂商名称, columnName=CONSUMER_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=systemName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=系统名称, columnName=SYSTEM_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构编码, columnName=ORG_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构名称, columnName=ORG_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=doctorName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=医生名称, columnName=DOCTOR_NAME, primaryKey=false, javaType=String}], tableComment=api访问日志, className=DsAccessLog, classNameLowerFirst=dsAccessLog, packageName=com.example.demo, hasDate=true, hasBigDecimal=false, hasTime=false, tableName=ds_access_log, primaryKey=null}
+2025-09-18 09:55:39.868 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 表数据: {columns=[{nullable=false, javaFieldName=logUid, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=日志主键, columnName=LOG_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=path, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=接口路径, columnName=PATH, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=state, defaultValue=null, dataType=int, autoIncrement=false, columnComment=执行状态码, columnName=STATE, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=duration, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=请求耗时 单位：毫秒, columnName=DURATION, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=ip, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=IP地址, columnName=IP, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=apiUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=api配置id, columnName=API_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=errorMsg, defaultValue=null, dataType=text, autoIncrement=false, columnComment=接口请求信息, columnName=ERROR_MSG, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addTime, defaultValue=null, dataType=datetime, autoIncrement=false, columnComment=请求时间, columnName=ADD_TIME, primaryKey=false, javaType=Date}, {nullable=true, javaFieldName=addUserUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=请求人, columnName=ADD_USER_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=addChannelCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建渠道, columnName=ADD_CHANNEL_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addAppCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建应用, columnName=ADD_APP_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景编号, columnName=BUSINESS_SCENARIOS_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景名称, columnName=BUSINESS_SCENARIOS_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=consumerName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=厂商名称, columnName=CONSUMER_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=systemName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=系统名称, columnName=SYSTEM_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构编码, columnName=ORG_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构名称, columnName=ORG_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=doctorName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=医生名称, columnName=DOCTOR_NAME, primaryKey=false, javaType=String}], tableComment=api访问日志, className=DsAccessLog, classNameLowerFirst=dsAccessLog, packageName=com.example.demo, hasDate=true, hasBigDecimal=false, hasTime=false, tableName=ds_access_log, primaryKey=null}
+2025-09-18 09:55:39.869 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: controller_1.ftl
+2025-09-18 09:55:39.876 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板名称: controller_1.ftl
+2025-09-18 09:55:39.876 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板内容: @RestController
+@RequestMapping(value = "${classNameLowerFirst}", produces = {"application/json;charset=UTF-8"})
+@Api(tags = "${tableComment}")
+@Slf4j
+public class ${className}Controller {
+    @Autowired
+    private ${className}Service ${classNameLowerFirst}Service;
+    
+}
+2025-09-18 09:55:39.876 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: controller_1.ftl
+2025-09-18 09:55:39.876 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板数据: {columns=[{nullable=false, javaFieldName=logUid, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=日志主键, columnName=LOG_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=path, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=接口路径, columnName=PATH, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=state, defaultValue=null, dataType=int, autoIncrement=false, columnComment=执行状态码, columnName=STATE, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=duration, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=请求耗时 单位：毫秒, columnName=DURATION, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=ip, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=IP地址, columnName=IP, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=apiUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=api配置id, columnName=API_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=errorMsg, defaultValue=null, dataType=text, autoIncrement=false, columnComment=接口请求信息, columnName=ERROR_MSG, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addTime, defaultValue=null, dataType=datetime, autoIncrement=false, columnComment=请求时间, columnName=ADD_TIME, primaryKey=false, javaType=Date}, {nullable=true, javaFieldName=addUserUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=请求人, columnName=ADD_USER_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=addChannelCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建渠道, columnName=ADD_CHANNEL_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addAppCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建应用, columnName=ADD_APP_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景编号, columnName=BUSINESS_SCENARIOS_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景名称, columnName=BUSINESS_SCENARIOS_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=consumerName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=厂商名称, columnName=CONSUMER_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=systemName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=系统名称, columnName=SYSTEM_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构编码, columnName=ORG_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构名称, columnName=ORG_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=doctorName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=医生名称, columnName=DOCTOR_NAME, primaryKey=false, javaType=String}], tableComment=api访问日志, className=DsAccessLog, classNameLowerFirst=dsAccessLog, packageName=com.example.demo, hasDate=true, hasBigDecimal=false, hasTime=false, tableName=ds_access_log, primaryKey=null}
+2025-09-18 09:55:39.998 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 生成结果: @RestController
+@RequestMapping(value = "dsAccessLog", produces = {"application/json;charset=UTF-8"})
+@Api(tags = "api访问日志")
+@Slf4j
+public class DsAccessLogController {
+    @Autowired
+    private DsAccessLogService dsAccessLogService;
+    
+}
+2025-09-18 09:55:40.000 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: service.ftl
+2025-09-18 09:55:40.003 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板名称: service.ftl
+2025-09-18 09:55:40.003 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板内容: 
+public interface ${className}Service extends IService<${className}>{
+
+}
+2025-09-18 09:55:40.003 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: service.ftl
+2025-09-18 09:55:40.004 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板数据: {columns=[{nullable=false, javaFieldName=logUid, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=日志主键, columnName=LOG_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=path, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=接口路径, columnName=PATH, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=state, defaultValue=null, dataType=int, autoIncrement=false, columnComment=执行状态码, columnName=STATE, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=duration, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=请求耗时 单位：毫秒, columnName=DURATION, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=ip, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=IP地址, columnName=IP, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=apiUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=api配置id, columnName=API_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=errorMsg, defaultValue=null, dataType=text, autoIncrement=false, columnComment=接口请求信息, columnName=ERROR_MSG, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addTime, defaultValue=null, dataType=datetime, autoIncrement=false, columnComment=请求时间, columnName=ADD_TIME, primaryKey=false, javaType=Date}, {nullable=true, javaFieldName=addUserUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=请求人, columnName=ADD_USER_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=addChannelCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建渠道, columnName=ADD_CHANNEL_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addAppCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建应用, columnName=ADD_APP_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景编号, columnName=BUSINESS_SCENARIOS_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景名称, columnName=BUSINESS_SCENARIOS_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=consumerName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=厂商名称, columnName=CONSUMER_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=systemName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=系统名称, columnName=SYSTEM_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构编码, columnName=ORG_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构名称, columnName=ORG_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=doctorName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=医生名称, columnName=DOCTOR_NAME, primaryKey=false, javaType=String}], tableComment=api访问日志, className=DsAccessLog, classNameLowerFirst=dsAccessLog, packageName=com.example.demo, hasDate=true, hasBigDecimal=false, hasTime=false, tableName=ds_access_log, primaryKey=null}
+2025-09-18 09:55:40.007 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 生成结果: 
+public interface DsAccessLogService extends IService<DsAccessLog>{
+
+}
+2025-09-18 09:55:40.007 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: serviceImpl.ftl
+2025-09-18 09:55:40.010 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板名称: serviceImpl.ftl
+2025-09-18 09:55:40.011 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板内容: 
+@Slf4j
+@Service
+public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}> implements ${className}Service{
+	
+}
+2025-09-18 09:55:40.011 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: serviceImpl.ftl
+2025-09-18 09:55:40.011 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板数据: {columns=[{nullable=false, javaFieldName=logUid, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=日志主键, columnName=LOG_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=path, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=接口路径, columnName=PATH, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=state, defaultValue=null, dataType=int, autoIncrement=false, columnComment=执行状态码, columnName=STATE, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=duration, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=请求耗时 单位：毫秒, columnName=DURATION, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=ip, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=IP地址, columnName=IP, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=apiUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=api配置id, columnName=API_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=errorMsg, defaultValue=null, dataType=text, autoIncrement=false, columnComment=接口请求信息, columnName=ERROR_MSG, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addTime, defaultValue=null, dataType=datetime, autoIncrement=false, columnComment=请求时间, columnName=ADD_TIME, primaryKey=false, javaType=Date}, {nullable=true, javaFieldName=addUserUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=请求人, columnName=ADD_USER_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=addChannelCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建渠道, columnName=ADD_CHANNEL_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addAppCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建应用, columnName=ADD_APP_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景编号, columnName=BUSINESS_SCENARIOS_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景名称, columnName=BUSINESS_SCENARIOS_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=consumerName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=厂商名称, columnName=CONSUMER_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=systemName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=系统名称, columnName=SYSTEM_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构编码, columnName=ORG_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构名称, columnName=ORG_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=doctorName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=医生名称, columnName=DOCTOR_NAME, primaryKey=false, javaType=String}], tableComment=api访问日志, className=DsAccessLog, classNameLowerFirst=dsAccessLog, packageName=com.example.demo, hasDate=true, hasBigDecimal=false, hasTime=false, tableName=ds_access_log, primaryKey=null}
+2025-09-18 09:55:40.013 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 生成结果: 
+@Slf4j
+@Service
+public class DsAccessLogServiceImpl extends ServiceImpl<DsAccessLogMapper, DsAccessLog> implements DsAccessLogService{
+	
+}
+2025-09-18 09:55:40.013 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: mapper.ftl
+2025-09-18 09:55:40.017 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板名称: mapper.ftl
+2025-09-18 09:55:40.018 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板内容: 
+@Mapper
+public interface ${className}Mapper extends BaseMapper<${className}>{
+
+	
+}
+2025-09-18 09:55:40.018 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: mapper.ftl
+2025-09-18 09:55:40.019 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板数据: {columns=[{nullable=false, javaFieldName=logUid, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=日志主键, columnName=LOG_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=path, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=接口路径, columnName=PATH, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=state, defaultValue=null, dataType=int, autoIncrement=false, columnComment=执行状态码, columnName=STATE, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=duration, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=请求耗时 单位：毫秒, columnName=DURATION, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=ip, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=IP地址, columnName=IP, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=apiUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=api配置id, columnName=API_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=errorMsg, defaultValue=null, dataType=text, autoIncrement=false, columnComment=接口请求信息, columnName=ERROR_MSG, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addTime, defaultValue=null, dataType=datetime, autoIncrement=false, columnComment=请求时间, columnName=ADD_TIME, primaryKey=false, javaType=Date}, {nullable=true, javaFieldName=addUserUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=请求人, columnName=ADD_USER_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=addChannelCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建渠道, columnName=ADD_CHANNEL_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addAppCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建应用, columnName=ADD_APP_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景编号, columnName=BUSINESS_SCENARIOS_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景名称, columnName=BUSINESS_SCENARIOS_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=consumerName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=厂商名称, columnName=CONSUMER_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=systemName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=系统名称, columnName=SYSTEM_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构编码, columnName=ORG_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构名称, columnName=ORG_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=doctorName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=医生名称, columnName=DOCTOR_NAME, primaryKey=false, javaType=String}], tableComment=api访问日志, className=DsAccessLog, classNameLowerFirst=dsAccessLog, packageName=com.example.demo, hasDate=true, hasBigDecimal=false, hasTime=false, tableName=ds_access_log, primaryKey=null}
+2025-09-18 09:55:40.022 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 生成结果: 
+@Mapper
+public interface DsAccessLogMapper extends BaseMapper<DsAccessLog>{
+
+	
+}
+2025-09-18 09:55:40.023 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: mapperXml_1.ftl
+2025-09-18 09:55:40.030 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板名称: mapperXml_1.ftl
+2025-09-18 09:55:40.030 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板内容: <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="${packageName}.mapper.${className}Mapper">
+	<resultMap id="BaseResultMap" type="${packageName}.entity.${className}">
+    <#list columns as column>
+		<result column="${column.columnName}" property="${column.javaFieldName}" />
+    </#list>
+	</resultMap>  
+</mapper>
+2025-09-18 09:55:40.031 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: mapperXml_1.ftl
+2025-09-18 09:55:40.032 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板数据: {columns=[{nullable=false, javaFieldName=logUid, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=日志主键, columnName=LOG_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=path, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=接口路径, columnName=PATH, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=state, defaultValue=null, dataType=int, autoIncrement=false, columnComment=执行状态码, columnName=STATE, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=duration, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=请求耗时 单位：毫秒, columnName=DURATION, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=ip, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=IP地址, columnName=IP, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=apiUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=api配置id, columnName=API_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=errorMsg, defaultValue=null, dataType=text, autoIncrement=false, columnComment=接口请求信息, columnName=ERROR_MSG, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addTime, defaultValue=null, dataType=datetime, autoIncrement=false, columnComment=请求时间, columnName=ADD_TIME, primaryKey=false, javaType=Date}, {nullable=true, javaFieldName=addUserUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=请求人, columnName=ADD_USER_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=addChannelCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建渠道, columnName=ADD_CHANNEL_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addAppCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建应用, columnName=ADD_APP_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景编号, columnName=BUSINESS_SCENARIOS_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景名称, columnName=BUSINESS_SCENARIOS_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=consumerName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=厂商名称, columnName=CONSUMER_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=systemName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=系统名称, columnName=SYSTEM_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构编码, columnName=ORG_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构名称, columnName=ORG_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=doctorName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=医生名称, columnName=DOCTOR_NAME, primaryKey=false, javaType=String}], tableComment=api访问日志, className=DsAccessLog, classNameLowerFirst=dsAccessLog, packageName=com.example.demo, hasDate=true, hasBigDecimal=false, hasTime=false, tableName=ds_access_log, primaryKey=null}
+2025-09-18 09:55:40.047 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 生成结果: <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.DsAccessLogMapper">
+	<resultMap id="BaseResultMap" type="com.example.demo.entity.DsAccessLog">
+		<result column="LOG_UID" property="logUid" />
+		<result column="PATH" property="path" />
+		<result column="STATE" property="state" />
+		<result column="DURATION" property="duration" />
+		<result column="IP" property="ip" />
+		<result column="API_UID" property="apiUid" />
+		<result column="ERROR_MSG" property="errorMsg" />
+		<result column="ADD_TIME" property="addTime" />
+		<result column="ADD_USER_UID" property="addUserUid" />
+		<result column="ADD_CHANNEL_CODE" property="addChannelCode" />
+		<result column="ADD_APP_CODE" property="addAppCode" />
+		<result column="BUSINESS_SCENARIOS_CODE" property="businessScenariosCode" />
+		<result column="BUSINESS_SCENARIOS_NAME" property="businessScenariosName" />
+		<result column="CONSUMER_NAME" property="consumerName" />
+		<result column="SYSTEM_NAME" property="systemName" />
+		<result column="ORG_CODE" property="orgCode" />
+		<result column="ORG_NAME" property="orgName" />
+		<result column="DOCTOR_NAME" property="doctorName" />
+	</resultMap>  
+</mapper>
+2025-09-18 09:55:40.047 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: entity.ftl
+2025-09-18 09:55:40.051 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板名称: entity.ftl
+2025-09-18 09:55:40.051 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板内容: <#if hasDate>
+import java.util.Date;
+</#if>
+<#if hasBigDecimal>
+import java.math.BigDecimal;
+</#if>
+<#if hasTime>
+import java.sql.Time;
+</#if>
+
+/**
+ * ${tableComment}
+ */
+@Data
+@TableName("${tableName}")
+public class ${className} {
+
+<#list columns as column>
+    /**
+     * ${column.columnComment!}
+     */
+    <#if column.primaryKey>
+    @TableId(value = "${column.columnName}", type = IdType.ASSIGN_ID)
+    <#else>
+    @TableField("${column.columnName}")
+    </#if>
+    private ${column.javaType} ${column.javaFieldName};
+
+</#list>
+ }
+2025-09-18 09:55:40.051 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 处理模板: entity.ftl
+2025-09-18 09:55:40.051 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 模板数据: {columns=[{nullable=false, javaFieldName=logUid, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=日志主键, columnName=LOG_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=path, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=接口路径, columnName=PATH, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=state, defaultValue=null, dataType=int, autoIncrement=false, columnComment=执行状态码, columnName=STATE, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=duration, defaultValue=null, dataType=bigint, autoIncrement=false, columnComment=请求耗时 单位：毫秒, columnName=DURATION, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=ip, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=IP地址, columnName=IP, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=apiUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=api配置id, columnName=API_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=errorMsg, defaultValue=null, dataType=text, autoIncrement=false, columnComment=接口请求信息, columnName=ERROR_MSG, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addTime, defaultValue=null, dataType=datetime, autoIncrement=false, columnComment=请求时间, columnName=ADD_TIME, primaryKey=false, javaType=Date}, {nullable=true, javaFieldName=addUserUid, defaultValue=null, dataType=int, autoIncrement=false, columnComment=请求人, columnName=ADD_USER_UID, primaryKey=false, javaType=Long}, {nullable=true, javaFieldName=addChannelCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建渠道, columnName=ADD_CHANNEL_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=addAppCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=创建应用, columnName=ADD_APP_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景编号, columnName=BUSINESS_SCENARIOS_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=businessScenariosName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=业务场景名称, columnName=BUSINESS_SCENARIOS_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=consumerName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=厂商名称, columnName=CONSUMER_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=systemName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=系统名称, columnName=SYSTEM_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgCode, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构编码, columnName=ORG_CODE, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=orgName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=机构名称, columnName=ORG_NAME, primaryKey=false, javaType=String}, {nullable=true, javaFieldName=doctorName, defaultValue=null, dataType=varchar, autoIncrement=false, columnComment=医生名称, columnName=DOCTOR_NAME, primaryKey=false, javaType=String}], tableComment=api访问日志, className=DsAccessLog, classNameLowerFirst=dsAccessLog, packageName=com.example.demo, hasDate=true, hasBigDecimal=false, hasTime=false, tableName=ds_access_log, primaryKey=null}
+2025-09-18 09:55:40.074 [http-nio-19999-exec-8] INFO  com.hui.codegen.service.CodeGenerationService - 生成结果: import java.util.Date;
+
+/**
+ * api访问日志
+ */
+@Data
+@TableName("ds_access_log")
+public class DsAccessLog {
+
+    /**
+     * 日志主键
+     */
+    @TableField("LOG_UID")
+    private Long logUid;
+
+    /**
+     * 接口路径
+     */
+    @TableField("PATH")
+    private String path;
+
+    /**
+     * 执行状态码
+     */
+    @TableField("STATE")
+    private Long state;
+
+    /**
+     * 请求耗时 单位：毫秒
+     */
+    @TableField("DURATION")
+    private Long duration;
+
+    /**
+     * IP地址
+     */
+    @TableField("IP")
+    private String ip;
+
+    /**
+     * api配置id
+     */
+    @TableField("API_UID")
+    private Long apiUid;
+
+    /**
+     * 接口请求信息
+     */
+    @TableField("ERROR_MSG")
+    private String errorMsg;
+
+    /**
+     * 请求时间
+     */
+    @TableField("ADD_TIME")
+    private Date addTime;
+
+    /**
+     * 请求人
+     */
+    @TableField("ADD_USER_UID")
+    private Long addUserUid;
+
+    /**
+     * 创建渠道
+     */
+    @TableField("ADD_CHANNEL_CODE")
+    private String addChannelCode;
+
+    /**
+     * 创建应用
+     */
+    @TableField("ADD_APP_CODE")
+    private String addAppCode;
+
+    /**
+     * 业务场景编号
+     */
+    @TableField("BUSINESS_SCENARIOS_CODE")
+    private String businessScenariosCode;
+
+    /**
+     * 业务场景名称
+     */
+    @TableField("BUSINESS_SCENARIOS_NAME")
+    private String businessScenariosName;
+
+    /**
+     * 厂商名称
+     */
+    @TableField("CONSUMER_NAME")
+    private String consumerName;
+
+    /**
+     * 系统名称
+     */
+    @TableField("SYSTEM_NAME")
+    private String systemName;
+
+    /**
+     * 机构编码
+     */
+    @TableField("ORG_CODE")
+    private String orgCode;
+
+    /**
+     * 机构名称
+     */
+    @TableField("ORG_NAME")
+    private String orgName;
+
+    /**
+     * 医生名称
+     */
+    @TableField("DOCTOR_NAME")
+    private String doctorName;
+
+ }
+2025-09-18 10:01:06.142 [File Watcher] INFO  org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2025-09-18 10:01:06.289 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - Starting CodeGeneratorApplication using Java 16.0.2 on SSC-LP-yonghui with PID 360308 (D:\workspace\IdeaProjects\code-generator\target\classes started by 符永辉 in D:\workspace\IdeaProjects\code-generator)
+2025-09-18 10:01:06.291 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-18 10:01:06.687 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 19999 (http)
+2025-09-18 10:01:06.715 [restartedMain] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 417 ms
+2025-09-18 10:01:06.827 [restartedMain] INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping - Adding welcome page template: index
+2025-09-18 10:01:06.878 [restartedMain] INFO  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-09-18 10:01:06.892 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 19999 (http) with context path ''
+2025-09-18 10:01:06.895 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - Started CodeGeneratorApplication in 0.677 seconds (JVM running for 359.167)
+2025-09-18 10:01:06.899 [restartedMain] INFO  org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-09-18 10:18:14.874 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - Starting CodeGeneratorApplication using Java 16.0.2 on SSC-LP-yonghui with PID 361260 (D:\workspace\IdeaProjects\code-generator\target\classes started by 符永辉 in D:\workspace\IdeaProjects\code-generator)
+2025-09-18 10:18:14.885 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-18 10:18:14.928 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-09-18 10:18:14.929 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-09-18 10:18:16.044 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 19999 (http)
+2025-09-18 10:18:16.191 [restartedMain] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1262 ms
+2025-09-18 10:18:16.704 [restartedMain] INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping - Adding welcome page template: index
+2025-09-18 10:18:16.983 [restartedMain] INFO  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-09-18 10:18:17.034 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 19999 (http) with context path ''
+2025-09-18 10:18:17.046 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - Started CodeGeneratorApplication in 2.467 seconds (JVM running for 3.276)
+2025-09-18 10:18:22.536 [http-nio-19999-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-09-18 10:18:22.537 [http-nio-19999-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2025-09-18 10:18:38.821 [File Watcher] INFO  org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 34 class path changes (0 additions, 34 deletions, 0 modifications)
+2025-09-18 10:18:47.864 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - Starting CodeGeneratorApplication using Java 16.0.2 on SSC-LP-yonghui with PID 361260 (D:\workspace\IdeaProjects\code-generator\target\classes started by 符永辉 in D:\workspace\IdeaProjects\code-generator)
+2025-09-18 10:18:47.865 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-18 10:18:48.280 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 19999 (http)
+2025-09-18 10:18:48.318 [restartedMain] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 447 ms
+2025-09-18 10:18:48.332 [restartedMain] WARN  org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'templateConfigController': Unsatisfied dependency expressed through field 'templateConfigService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.hui.codegen.service.TemplateConfigService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2025-09-18 10:18:48.345 [restartedMain] INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-09-18 10:18:48.385 [restartedMain] ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field templateConfigService in com.hui.codegen.web.controller.TemplateConfigController required a bean of type 'com.hui.codegen.service.TemplateConfigService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.hui.codegen.service.TemplateConfigService' in your configuration.
+
+2025-09-18 10:18:49.907 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - Starting CodeGeneratorApplication using Java 16.0.2 on SSC-LP-yonghui with PID 361260 (D:\workspace\IdeaProjects\code-generator\target\classes started by 符永辉 in D:\workspace\IdeaProjects\code-generator)
+2025-09-18 10:18:49.909 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - No active profile set, falling back to 1 default profile: "default"
+2025-09-18 10:18:50.289 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 19999 (http)
+2025-09-18 10:18:50.311 [restartedMain] INFO  org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 397 ms
+2025-09-18 10:18:50.396 [restartedMain] INFO  org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping - Adding welcome page template: index
+2025-09-18 10:18:50.446 [restartedMain] INFO  org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-09-18 10:18:50.456 [restartedMain] INFO  org.springframework.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 19999 (http) with context path ''
+2025-09-18 10:18:50.458 [restartedMain] INFO  com.hui.codegen.CodeGeneratorApplication - Started CodeGeneratorApplication in 0.617 seconds (JVM running for 36.689)
+2025-09-18 10:18:50.459 [restartedMain] INFO  org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged

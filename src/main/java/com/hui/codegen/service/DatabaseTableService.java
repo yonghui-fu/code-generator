@@ -2,6 +2,8 @@ package com.hui.codegen.service;
 
 import com.hui.codegen.model.DatabaseConfig;
 import com.hui.codegen.util.SQLiteUtil;
+import com.hui.codegen.web.dto.SimpleTableInfo;
+import com.hui.codegen.web.dto.SimpleTablePageResult;
 import com.hui.codegen.web.dto.TableInfo;
 import com.hui.codegen.web.dto.TablePageResult;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,145 @@ import java.util.Map;
  */
 @Service
 public class DatabaseTableService {
+
+    /**
+     * 获取简单表列表（只包含表名，用于快速返回）
+     */
+    public List<SimpleTableInfo> getTableNamesOnly(DatabaseConfig config, int page, int size) {
+        List<SimpleTableInfo> tables = new ArrayList<>();
+        
+        try (Connection conn = getConnection(config)) {
+            String sql = "";
+            if ("mysql".equalsIgnoreCase(config.getDbType())) {
+                sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = ? ORDER BY table_name LIMIT ? OFFSET ?";
+            } else if ("postgresql".equalsIgnoreCase(config.getDbType())) {
+                sql = "SELECT tablename as table_name FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename LIMIT ? OFFSET ?";
+            } else {
+                // SQLite默认查询
+                sql = "SELECT name as table_name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name LIMIT ? OFFSET ?";
+            }
+            
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                if ("mysql".equalsIgnoreCase(config.getDbType())) {
+                    pstmt.setString(1, config.getDatabase());
+                    pstmt.setInt(2, size);
+                    pstmt.setInt(3, (page - 1) * size);
+                } else if ("postgresql".equalsIgnoreCase(config.getDbType())) {
+                    pstmt.setInt(1, size);
+                    pstmt.setInt(2, (page - 1) * size);
+                } else {
+                    // SQLite
+                    pstmt.setInt(1, size);
+                    pstmt.setInt(2, (page - 1) * size);
+                }
+                
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        String tableName = rs.getString("table_name");
+                        tables.add(new SimpleTableInfo(tableName));
+                    }
+                }
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("获取表名列表失败: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return tables;
+    }
+
+    /**
+     * 获取所有表名列表（不分页，用于快速返回）
+     */
+    public List<SimpleTableInfo> getAllTableNames(DatabaseConfig config) {
+        List<SimpleTableInfo> tables = new ArrayList<>();
+        
+        try (Connection conn = getConnection(config)) {
+            String sql = "";
+            if ("mysql".equalsIgnoreCase(config.getDbType())) {
+                sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = ? ORDER BY table_name";
+            } else if ("postgresql".equalsIgnoreCase(config.getDbType())) {
+                sql = "SELECT tablename as table_name FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename";
+            } else {
+                // SQLite默认查询
+                sql = "SELECT name as table_name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name";
+            }
+            
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                if ("mysql".equalsIgnoreCase(config.getDbType())) {
+                    pstmt.setString(1, config.getDatabase());
+                }
+                
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        String tableName = rs.getString("table_name");
+                        tables.add(new SimpleTableInfo(tableName));
+                    }
+                }
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("获取所有表名列表失败: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return tables;
+    }
+
+    /**
+     * 获取简单表列表（分页，只包含表名，用于快速返回）
+     */
+    public SimpleTablePageResult getTableNamesByPage(DatabaseConfig config, int page, int size) {
+        List<SimpleTableInfo> tables = new ArrayList<>();
+        int total = 0;
+        
+        try (Connection conn = getConnection(config)) {
+            
+            // 获取总数（系统表查询）
+            total = getTotalTableCount(conn, config);
+            
+            // 分页查询表信息
+            String sql = "";
+            if ("mysql".equalsIgnoreCase(config.getDbType())) {
+                sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = ? ORDER BY table_name LIMIT ? OFFSET ?";
+            } else if ("postgresql".equalsIgnoreCase(config.getDbType())) {
+                sql = "SELECT tablename as table_name FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename LIMIT ? OFFSET ?";
+            } else {
+                // SQLite默认查询
+                sql = "SELECT name as table_name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name LIMIT ? OFFSET ?";
+            }
+            
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                if ("mysql".equalsIgnoreCase(config.getDbType())) {
+                    pstmt.setString(1, config.getDatabase());
+                    pstmt.setInt(2, size);
+                    pstmt.setInt(3, (page - 1) * size);
+                } else if ("postgresql".equalsIgnoreCase(config.getDbType())) {
+                    pstmt.setInt(1, size);
+                    pstmt.setInt(2, (page - 1) * size);
+                } else {
+                    // SQLite
+                    pstmt.setInt(1, size);
+                    pstmt.setInt(2, (page - 1) * size);
+                }
+                
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        String tableName = rs.getString("table_name");
+                        tables.add(new SimpleTableInfo(tableName));
+                    }
+                }
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("获取表名列表失败: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        int totalPages = (int) Math.ceil((double) total / size);
+        return new SimpleTablePageResult(tables, totalPages, total, page, size);
+    }
 
     /**
      * 获取表列表（分页）

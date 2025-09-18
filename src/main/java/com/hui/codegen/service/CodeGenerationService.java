@@ -69,7 +69,7 @@ public class CodeGenerationService {
             for (String templateName : request.getSelectedTemplates()) {
                 log.info("处理模板: {}", templateName);
                 String content = generateFileContent(templateName, tableData);
-                String fileName = templateName;//buildFileName(templateName, tableData);
+                String fileName = buildFileName(templateName, tableData);
                 String fileType = getFileType(templateName);
                 
                 files.add(new PreviewFileInfo(fileName, fileType, content));

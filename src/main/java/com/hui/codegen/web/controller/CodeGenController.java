@@ -47,6 +47,52 @@ public class CodeGenController {
     }
 
     /**
+     * 获取所有表名列表（不分页，用于快速返回）
+     */
+    @GetMapping("/tables/{configId}/all-names")
+    @ResponseBody
+    public List<SimpleTableInfo> getAllTableNames(@PathVariable String configId) {
+        try {
+            // 根据配置ID获取数据库配置
+            DatabaseConfig config = databaseConfigService.getConfigById(configId);
+            if (config == null) {
+                System.err.println("未找到ID为 " + configId + " 的数据库配置");
+                return new ArrayList<>();
+            }
+            return databaseTableService.getAllTableNames(config);
+        } catch (Exception e) {
+            System.err.println("获取所有表名列表失败: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * 获取表列表（分页，只包含表名，用于快速返回）
+     */
+    @GetMapping("/tables/{configId}/names-only")
+    @ResponseBody
+    public SimpleTablePageResult getTableNamesByPage(@PathVariable String configId, 
+                                         @RequestParam(defaultValue = "1") int page,
+                                         @RequestParam(defaultValue = "20") int size) {
+        try {
+            // 根据配置ID获取数据库配置
+            DatabaseConfig config = databaseConfigService.getConfigById(configId);
+            if (config == null) {
+                System.err.println("未找到ID为 " + configId + " 的数据库配置");
+                // 返回空结果
+                return new SimpleTablePageResult(new ArrayList<>(), 0, 0, page, size);
+            }
+            return databaseTableService.getTableNamesByPage(config, page, size);
+        } catch (Exception e) {
+            System.err.println("获取表名列表失败: " + e.getMessage());
+            e.printStackTrace();
+            // 返回空结果
+            return new SimpleTablePageResult(new ArrayList<>(), 0, 0, page, size);
+        }
+    }
+
+    /**
      * 获取表列表（分页）
      */
     @GetMapping("/tables/{configId}/page")
