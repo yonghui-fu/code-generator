@@ -177,8 +177,27 @@ public class CodeGenerationService {
      * 构建文件名
      */
     private String buildFileName(String templateName, Map<String, Object> data) {
+        // 首先尝试从模板配置中获取文件名模式
+        try {
+            // 获取模板信息，包括文件名模式
+            List<com.hui.codegen.web.dto.TemplateGroup> templateGroups = templateConfigService.getAllTemplateGroups();
+            for (com.hui.codegen.web.dto.TemplateGroup group : templateGroups) {
+                if (group.getTemplates() != null) {
+                    for (com.hui.codegen.web.dto.TemplateInfo template : group.getTemplates()) {
+                        if (templateName.equals(template.getName()) && template.getFileNamePattern() != null && !template.getFileNamePattern().isEmpty()) {
+                            // 使用FreeMarker处理文件名模式
+                            return processFileNamePattern(template.getFileNamePattern(), data);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.warn("处理模板文件名模式时出错，使用默认文件名: " + e.getMessage());
+        }
+        
+        // 如果没有配置文件名模式或处理失败，使用默认规则
         String className = (String) data.get("className");
-
+        
         // 根据模板类型确定文件扩展名
         switch (templateName) {
             case "entity.ftl":
@@ -194,6 +213,17 @@ public class CodeGenerationService {
             default:
                 return className + ".java";
         }
+    }
+    
+    /**
+     * 处理文件名模式
+     */
+    private String processFileNamePattern(String fileNamePattern, Map<String, Object> data) throws Exception {
+        // 使用FreeMarker处理文件名模式
+        Template template = new Template("fileNamePattern", fileNamePattern, freemarkerConfig);
+        StringWriter writer = new StringWriter();
+        template.process(data, writer);
+        return writer.toString();
     }
 
     /**

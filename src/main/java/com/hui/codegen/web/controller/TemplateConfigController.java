@@ -72,6 +72,32 @@ public class TemplateConfigController {
     }
     
     /**
+     * 更新模板信息
+     */
+    @PostMapping("/update-template-info")
+    @ResponseBody
+    public String updateTemplateInfo(@RequestBody TemplateInfo templateInfo) {
+        try {
+            return templateConfigService.updateTemplateInfo(templateInfo);
+        } catch (Exception e) {
+            return "error: " + e.getMessage();
+        }
+    }
+    
+    /**
+     * 检查数据库结构
+     */
+    @GetMapping("/check-db")
+    @ResponseBody
+    public String checkDatabaseStructure() {
+        try {
+            return templateConfigService.checkDatabaseStructure();
+        } catch (Exception e) {
+            return "error: " + e.getMessage();
+        }
+    }
+    
+    /**
      * 删除模板
      */
     @DeleteMapping("/delete/{templateName}")

@@ -10,6 +10,7 @@ public class TemplateInfo {
     private String templateType;
     private String groupId;
     private boolean enabled;
+    private String fileNamePattern; // 生成文件名的模板模式
 
     public TemplateInfo() {
     }
@@ -21,6 +22,16 @@ public class TemplateInfo {
         this.templateType = templateType;
         this.groupId = groupId;
         this.enabled = enabled;
+    }
+
+    public TemplateInfo(String name, String displayName, String description, String templateType, String groupId, boolean enabled, String fileNamePattern) {
+        this.name = name;
+        this.displayName = displayName;
+        this.description = description;
+        this.templateType = templateType;
+        this.groupId = groupId;
+        this.enabled = enabled;
+        this.fileNamePattern = fileNamePattern;
     }
 
     public String getName() {
@@ -69,5 +80,13 @@ public class TemplateInfo {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getFileNamePattern() {
+        return fileNamePattern;
+    }
+
+    public void setFileNamePattern(String fileNamePattern) {
+        this.fileNamePattern = fileNamePattern;
     }
 }

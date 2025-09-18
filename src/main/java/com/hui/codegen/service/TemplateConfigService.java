@@ -62,7 +62,7 @@ public class TemplateConfigService {
      */
     public List<TemplateInfo> getTemplatesByGroupId(String groupId) {
         List<TemplateInfo> templates = new ArrayList<>();
-        String sql = "SELECT name, display_name, description, template_type, enabled, sort_order, group_id " +
+        String sql = "SELECT name, display_name, description, template_type, enabled, sort_order, group_id, file_name_pattern " +
                      "FROM template_info " +
                      "WHERE group_id = ? AND enabled = 1 " +
                      "ORDER BY sort_order, created_time";
@@ -81,6 +81,10 @@ public class TemplateConfigService {
                     template.setTemplateType(rs.getString("template_type"));
                     template.setEnabled(rs.getInt("enabled") == 1);
                     template.setGroupId(rs.getString("group_id"));
+                    
+                    // 获取file_name_pattern字段
+                    template.setFileNamePattern(rs.getString("file_name_pattern"));
+                    
                     templates.add(template);
                 }
             }
@@ -156,8 +160,8 @@ public class TemplateConfigService {
         templateName = generateUniqueTemplateName(templateName, templateInfo.getGroupId());
         templateInfo.setName(templateName);
         
-        String sql = "INSERT INTO template_info (name, display_name, description, template_type, enabled, sort_order, group_id, created_time, updated_time) " +
-                     "VALUES (?, ?, ?, ?, ?, 0, ?, datetime('now'), datetime('now'))";
+        String sql = "INSERT INTO template_info (name, display_name, description, template_type, enabled, sort_order, group_id, file_name_pattern, created_time, updated_time) " +
+                     "VALUES (?, ?, ?, ?, ?, 0, ?, ?, datetime('now'), datetime('now'))";
         
         try (Connection conn = SQLiteUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -168,6 +172,7 @@ public class TemplateConfigService {
             pstmt.setString(4, templateInfo.getTemplateType());
             pstmt.setInt(5, templateInfo.isEnabled() ? 1 : 0);
             pstmt.setString(6, templateInfo.getGroupId());
+            pstmt.setString(7, templateInfo.getFileNamePattern());
             
             int result = pstmt.executeUpdate();
             
@@ -185,17 +190,33 @@ public class TemplateConfigService {
             return "添加失败: " + e.getMessage();
         }
     }
+    
+    /**
+     * 更新模板信息
+     */
+    public String updateTemplateInfo(TemplateInfo templateInfo) {
+        String sql = "UPDATE template_info SET file_name_pattern = ?, updated_time = datetime('now') WHERE name = ?";
+        
+        try (Connection conn = SQLiteUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, templateInfo.getFileNamePattern());
+            pstmt.setString(2, templateInfo.getName());
+            
+            int result = pstmt.executeUpdate();
+            return result > 0 ? "success" : "更新失败";
+            
+        } catch (SQLException e) {
+            System.err.println("更新模板信息失败: " + e.getMessage());
+            e.printStackTrace();
+            return "更新失败: " + e.getMessage();
+        }
+    }
 
     /**
      * 删除模板
      */
     public String deleteTemplate(String templateName) {
-        // 检查是否为系统默认模板
-        List<String> systemTemplates = Arrays.asList("entity.ftl", "controller.ftl", "service.ftl", "mapper.ftl", "mapperXml.ftl");
-        if (systemTemplates.contains(templateName)) {
-            return "系统默认模板不能删除";
-        }
-        
         String deleteTemplateInfoSql = "DELETE FROM template_info WHERE name = ?";
         String deleteTemplateContentSql = "DELETE FROM template_content WHERE template_name = ?";
         
@@ -1159,6 +1180,42 @@ public class TemplateConfigService {
                 }
             }
         }
+    }
+    
+    /**
+     * 检查数据库结构
+     */
+    public String checkDatabaseStructure() {
+        StringBuilder result = new StringBuilder();
+        try (Connection conn = SQLiteUtil.getConnection()) {
+            // 获取数据库元数据
+            DatabaseMetaData metaData = conn.getMetaData();
+            
+            // 查询template_info表的列信息
+            ResultSet columns = metaData.getColumns(null, null, "template_info", null);
+            
+            result.append("template_info表的列信息:\n");
+            while (columns.next()) {
+                String columnName = columns.getString("COLUMN_NAME");
+                String dataType = columns.getString("TYPE_NAME");
+                result.append("列名: ").append(columnName).append(", 数据类型: ").append(dataType).append("\n");
+            }
+            
+            // 检查是否有file_name_pattern列
+            ResultSet fileNamePatternColumn = metaData.getColumns(null, null, "template_info", "file_name_pattern");
+            if (fileNamePatternColumn.next()) {
+                result.append("\nfile_name_pattern列存在\n");
+            } else {
+                result.append("\nfile_name_pattern列不存在\n");
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("检查数据库结构失败: " + e.getMessage());
+            e.printStackTrace();
+            return "检查数据库结构失败: " + e.getMessage();
+        }
+        
+        return result.toString();
     }
     
     /**

@@ -154,6 +154,11 @@
                                 <h6 class="mb-0" id="currentTemplateName">选择模板进行编辑</h6>
                             </div>
                             <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="fileNamePatternEditor" class="form-label">生成文件名模式</label>
+                                    <input type="text" class="form-control" id="fileNamePatternEditor" placeholder="如: ${className}.java">
+                                    <div class="form-text">使用FreeMarker模板语法定义生成的文件名模式</div>
+                                </div>
                                 <textarea id="templateEditor"></textarea>
                             </div>
                         </div>
@@ -525,6 +530,29 @@
                 .catch(error => {
                     alert('加载模板失败：' + error);
                 });
+                
+            // 加载模板信息（包括文件名模式）
+            fetch('/template-config/groups')
+                .then(response => response.json())
+                .then(groups => {
+                    let foundTemplate = null;
+                    for (let group of groups) {
+                        if (group.templates) {
+                            foundTemplate = group.templates.find(t => t.name === templateName);
+                            if (foundTemplate) break;
+                        }
+                    }
+                    
+                    if (foundTemplate) {
+                        document.getElementById('fileNamePatternEditor').value = foundTemplate.fileNamePattern || '';
+                    } else {
+                        document.getElementById('fileNamePatternEditor').value = '';
+                    }
+                })
+                .catch(error => {
+                    console.error('加载模板信息失败：', error);
+                    document.getElementById('fileNamePatternEditor').value = '';
+                });
         }
 
         // 保存模板
@@ -535,13 +563,33 @@
             }
 
             const content = editor.getValue();
+            const fileNamePattern = document.getElementById('fileNamePatternEditor').value;
             
+            // 首先保存模板内容
             fetch('/template-config/save', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: `templateName=${currentTemplate}&content=${encodeURIComponent(content)}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === 'success') {
+                    // 然后更新模板信息（包括文件名模式）
+                    return fetch('/template-config/update-template-info', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: currentTemplate,
+                            fileNamePattern: fileNamePattern
+                        })
+                    });
+                } else {
+                    throw new Error('保存模板内容失败：' + data);
+                }
             })
             .then(response => response.text())
             .then(data => {
@@ -730,11 +778,11 @@
             }
             
             // 检查是否为系统默认模板
-            const systemTemplates = ['entity.ftl', 'controller.ftl', 'service.ftl', 'mapper.ftl', 'mapperXml.ftl'];
-            if (systemTemplates.includes(currentTemplate)) {
-                alert('系统默认模板不可删除！');
-                return;
-            }
+<!--            const systemTemplates = ['entity.ftl', 'controller.ftl', 'service.ftl', 'mapper.ftl', 'mapperXml.ftl'];-->
+<!--            if (systemTemplates.includes(currentTemplate)) {-->
+<!--                alert('系统默认模板不可删除！');-->
+<!--                return;-->
+<!--            }-->
 
             if (!confirm('确定要删除模板 "' + currentTemplate + '"吗？此操作不可撤销！')) {
                 return;
