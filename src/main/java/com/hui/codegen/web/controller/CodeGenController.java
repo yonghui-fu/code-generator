@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -215,6 +216,64 @@ public class CodeGenController {
             System.err.println("预览生成失败: " + e.getMessage());
             e.printStackTrace();
             return new CodePreviewResult(false, "预览生成失败: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * 预览代码页面
+     */
+    @PostMapping("/preview-page")
+    public String previewCodePage(
+            @RequestParam String configId,
+            @RequestParam String packageName,
+            @RequestParam String outputPath,
+            @RequestParam String selectedTables,
+            @RequestParam String selectedTemplates,
+            Model model) {
+        try {
+            // 解析选中的表和模板
+            // 移除方括号并按逗号分割，然后去除每个元素的引号和空格
+            String[] tableArray = selectedTables.replace("[", "").replace("]", "").split(",");
+            List<String> tableList = new ArrayList<>();
+            for (String table : tableArray) {
+                tableList.add(table.replace("\"", "").trim());
+            }
+            
+            String[] templateArray = selectedTemplates.replace("[", "").replace("]", "").split(",");
+            List<String> templateList = new ArrayList<>();
+            for (String template : templateArray) {
+                templateList.add(template.replace("\"", "").trim());
+            }
+            
+            // 创建CodeGenRequest对象
+            CodeGenRequest request = new CodeGenRequest();
+            request.setConfigId(configId);
+            request.setPackageName(packageName);
+            request.setOutputPath(outputPath);
+            request.setSelectedTables(tableList);
+            request.setSelectedTemplates(templateList);
+            
+            // 验证请求参数
+            if (request.getSelectedTables() == null || request.getSelectedTables().isEmpty()) {
+                model.addAttribute("error", "请选择要生成的表");
+                return "code-preview";
+            }
+            
+            if (request.getSelectedTemplates() == null || request.getSelectedTemplates().isEmpty()) {
+                model.addAttribute("error", "请选择要生成的模板");
+                return "code-preview";
+            }
+            
+            // 使用代码生成服务生成预览
+            List<PreviewFileInfo> files = codeGenerationService.generatePreview(request);
+            model.addAttribute("files", files);
+            model.addAttribute("request", request);
+            return "code-preview";
+        } catch (Exception e) {
+            System.err.println("预览生成失败: " + e.getMessage());
+            e.printStackTrace();
+            model.addAttribute("error", "预览生成失败: " + e.getMessage());
+            return "code-preview";
         }
     }
 }

@@ -201,12 +201,16 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-12 text-end">
-                                        <button type="button" class="btn btn-info me-2" onclick="previewCode()">
-                                            <i class="fa fa-eye"></i> 预览代码
-                                        </button>
-                                        <button type="button" class="btn btn-success" onclick="generateCode()">
-                                            <i class="fa fa-magic"></i> 生成代码
-                                        </button>
+                                        <form id="previewForm" action="/code-gen/preview-page" method="post">
+                                            <input type="hidden" id="previewConfigId" name="configId">
+                                            <input type="hidden" id="previewPackageName" name="packageName">
+                                            <input type="hidden" id="previewOutputPath" name="outputPath">
+                                            <input type="hidden" id="previewSelectedTables" name="selectedTables">
+                                            <input type="hidden" id="previewSelectedTemplates" name="selectedTemplates">
+                                            <button type="button" class="btn btn-info" onclick="submitPreviewForm()">
+                                                <i class="fa fa-eye"></i> 预览代码
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -558,75 +562,34 @@
             });
         }
 
-        // 预览代码
-        function previewCode() {
-            const request = {
-                configId: currentConfigId,
-                packageName: document.getElementById('packageName').value,
-                outputPath: document.getElementById('outputPath').value,
-                selectedTables: selectedTables,
-                selectedTemplates: []
-            };
-
-            // 获取选中的模板
-            document.querySelectorAll('#templateContainer input[type="checkbox"]:checked').forEach(checkbox => {
-                request.selectedTemplates.push(checkbox.value);
-            });
-
+        // 提交预览表单
+        function submitPreviewForm() {
+            // 检查是否选择了表和模板
             if (selectedTables.length === 0) {
                 alert('请先选择要生成的表');
                 return;
             }
 
-            if (request.selectedTemplates.length === 0) {
+            // 获取选中的模板
+            let selectedTemplates = [];
+            document.querySelectorAll('#templateContainer input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedTemplates.push(checkbox.value);
+            });
+
+            if (selectedTemplates.length === 0) {
                 alert('请先选择要生成的模板');
                 return;
             }
-            
-            // 显示加载状态
-            const previewBtn = event.target;
-            const originalContent = previewBtn.innerHTML;
-            previewBtn.disabled = true;
-            previewBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 预览中...';
-            
-            // 隐藏生成结果
-            document.getElementById('generateResult').style.display = 'none';
 
-            fetch('/code-gen/preview', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(request)
-            })
-            .then(response => response.json())
-            .then(result => {
-                console.log('预览结果:', result);
-                
-                if (result.success && result.files && result.files.length > 0) {
-                    previewFiles = result.files;
-                    displayPreviewFiles();
-                    document.getElementById('previewContainer').style.display = 'block';
-                } else {
-                    document.getElementById('generateResult').innerHTML = 
-                        `<div class="alert alert-danger">
-                            <i class="fa fa-exclamation-circle"></i> ${result.message || '预览失败'}
-                        </div>`;
-                    document.getElementById('generateResult').style.display = 'block';
-                }
-            })
-            .catch(error => {
-                console.error('预览错误:', error);
-                document.getElementById('generateResult').innerHTML = 
-                    `<div class="alert alert-danger">
-                        <i class="fa fa-exclamation-circle"></i> 预览失败：${error.message}
-                    </div>`;
-                document.getElementById('generateResult').style.display = 'block';
-            })
-            .finally(() => {
-                previewBtn.disabled = false;
-                previewBtn.innerHTML = originalContent;
-            });
+            // 设置表单字段
+            document.getElementById('previewConfigId').value = currentConfigId;
+            document.getElementById('previewPackageName').value = document.getElementById('packageName').value;
+            document.getElementById('previewOutputPath').value = document.getElementById('outputPath').value;
+            document.getElementById('previewSelectedTables').value = JSON.stringify(selectedTables);
+            document.getElementById('previewSelectedTemplates').value = JSON.stringify(selectedTemplates);
+
+            // 提交表单
+            document.getElementById('previewForm').submit();
         }
         
         // 显示预览文件列表
